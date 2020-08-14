@@ -6,6 +6,8 @@ import {connect} from 'react-redux';
 // import styles from './app.scss';
 import Btn from './components/Btn';
 import ReactDom from 'react-dom';
+import Tree from './components/Tree';
+import AsyncTree from './components/myAsyncTree/TreeSyncTest'
 class App extends React.Component{
     render = () => {
         return (
@@ -15,7 +17,9 @@ class App extends React.Component{
                 hello react
                 {/* <img src={pic_1} alt="" style={{width: 100, height: 100}}/>
                 <img src={pic_2} alt="" style={{width: 100, height: 100}}/> */}
-                <Btn></Btn>
+                {/* <Btn></Btn> */}
+                {/* <Tree></Tree> */}
+                <AsyncTree></AsyncTree>
             </div>
         )
     }
@@ -32,5 +36,5 @@ class App extends React.Component{
 //       saveArticle: article => dispatch(simulateHttpRequest(article)),
 //     }
 //   }
-App = connect()(App);
+// App = connect()(App);
 export default App;
