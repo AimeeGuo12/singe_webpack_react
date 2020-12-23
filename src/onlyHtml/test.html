@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>测试区域</title>
+<script>
+function changeStyle(){
+    var x=document.getElementById("myframe");
+    var y=(x.contentWindow || x.contentDocument);
+    console.log(y)
+    if (y.document)y=y.document;
+    console.log(y)
+    y.body.style.backgroundColor="#0000ff";
+}
+
+function test () {
+    let app = '', appcode = '',AppStr = '',isAppro = false;
+let appN = window.parent.location.hash.split("?");
+if (appN && appN[1]) {
+    console.log(appN[1])
+    if(appN[1].indexOf('&')!==-1){
+        isAppro = true
+    }
+    let appKey = appN[1].split('=')
+    if(appKey && appKey[1]){
+        let AppStrObj = sessionStorage.getItem("NCCAPPURL")
+        let AppOBJ =JSON.parse(AppStrObj) 
+        if(!isAppro){
+            AppStr = AppOBJ[appKey[1]]
+            console.log(AppStr)
+        }else{
+            AppStr = appN[1]
+        }
+        let appArray = AppStr.split('&')
+        if (appArray && appArray instanceof Array) {
+            appArray.forEach((item) => {
+                if (item.indexOf('=') != -1 && item.split('=') && item.split('=') instanceof Array) {
+                    if (item.split('=')[0] === 'n') {
+                        if (item.split('=')[1]) {
+                            app = decodeURIComponent(decodeURIComponent(item.split('=')[1]));
+                        }
+                    }
+                    if (item.split('=')[0] === 'c') {
+                        if (item.split('=')[1]) {
+                            appcode = decodeURIComponent(decodeURIComponent(item.split('=')[1]));
+                        }
+                    }
+                }
+            });
+        }
+    }
+}
+}
+</script>
+</head>
+<body>
+    
+<iframe id="myframe" src="www.baidu.com">
+<p>你的浏览器不支持iframes。</p>
+</iframe>
+<br><br>
+<input type="button" onclick="changeStyle()" value="修改背景颜色">
+
+</body>
+</html>

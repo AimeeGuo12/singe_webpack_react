@@ -7,11 +7,13 @@ import {connect} from 'react-redux';
 import Btn from './components/Btn';
 import ReactDom from 'react-dom';
 import Tree from './components/Tree';
-import AsyncTree from './components/myAsyncTree/TreeSyncTest'
+import AsyncTree from './components/myAsyncTree/TreeSyncTest';
+import {currying} from './js/currying'
 class App extends React.Component{
     render = () => {
         return (
             <div className='title'>
+                <button onClick={currying}>测试</button>
             {/* // <div className={styles.title}> */}
     
                 hello react

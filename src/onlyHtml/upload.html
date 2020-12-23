@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='root'>
+        <input type="file" onchange="selectFile()" multiple />
+        <!-- accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" -->
+        <button onclick="submit()"></button>
+        <!-- downTemp就是文件所在地址 如果是调接口下载 直接写点击事件即可 调用函数为./download.js文件中的 不用加 download  href-->
+        <!-- <a className="ibrFir" download='实习生招聘导入模板.xlsx' href={downTemp}>{language['hi6007-000301'] || '模板下载'}</a> -->
+    </div>
+
+</body>
+<script>
+    let filesArr = []
+    let root = document.getElementById('root')
+    function selectFile(e) {
+        const event = e || window.event
+        console.log(event)
+        // 检查是否有文件被选中
+        let _this = this
+        // let file = event.target.files[0];
+        // 多选
+        // Array.from()方法就是将一个类数组对象或者可遍历对象转换成一个真正的数组
+        let files = Array.from(event.target.files);
+
+        // FileReader 类型实现的是一种异步文件读取机制。可以把 FileReader 想象成 XMLHttpRequest，区别只是它读取的是文件系统，而不是远程服务器。为了读取文件中的数据，FileReader 提供了如下几个方法。
+
+        // readAsText(file,encoding)：以纯文本形式读取文件，将读取到的文本保存在 result 属性中。第二个参数用于指定编码类型，是可选的。
+        // readAsDataURL(file)：读取文件并将文件以数据 URI 的形式保存在 result 属性中。
+        // readAsBinaryString(file)：读取文件并将一个字符串保存在 result 属性中，字符串中的每个字符表示一字节。
+        // readAsArrayBuffer(file)：读取文件并将一个包含文件内容的 ArrayBuffer 保存在
+        // result 属性中。
+        files.map((file) => {
+            if (window.FileReader) {
+                let reader = new FileReader()
+                reader.readAsDataURL(file)  // 读取过程
+                // 由于读取过程是异步的，因此 FileReader 也提供了几个事件。常用的事件有
+
+                // progress 是否又读取了新数据
+                // error 是否发生了错误
+                // end 是否已经读完了整个文件
+                // load 文件加载成功后触发
+                // loadend 该事件发生就意味着已经读取完整个文件，或者读取时发生了错误，或者读取过程被中断。
+
+
+                // 异步读取
+                reader.onloadend = function (e) {
+                    console.log(e)
+                    // do something after read image
+                    let fileSize = getSize(file.size);
+                    let fileName = file.name;
+                    let fileType = file.type;
+                    let fileUrl = e.target.result; // (reader.result)
+                    // 过滤已有的文件
+                    //     if (this.state.fileArr.length > 0) {
+                    //     for (let i = 0; i < this.state.fileArr.length; i++) {
+                    //         if (this.state.fileArr[i].fileUrl === fileUrl) {
+                    //             return;
+                    //         }
+                    //     }
+                    // }
+                    //文件对象 包含本次上传的所有的文件信息
+                    let fileObj = {
+                        fileId: (new Date()).getTime(),
+                        fileName,
+                        fileSize,
+                        fileUrl,
+                        fileType,
+                        file
+                    };
+                    //所有的文件信息
+                    filesArr.push(fileObj);
+                    if (fileType.match('image.*')) {
+                        let img = document.createElement('img');
+                        img.src = fileUrl
+                        img.style.width = '100px'
+                        img.style.height = '100px'
+                        root.appendChild(img)
+                    }
+
+                }
+
+            }
+
+        })
+    }
+    getSize = (size) => {
+        const num = 1024.00;
+        let filesize;
+        if (!size) {
+            return '';
+        } else if (size < num) {
+            return filesize = size + 'B';
+        } else if (size < Math.pow(num, 2)) {
+            return filesize = (size / num).toFixed(2) + 'KB';
+        } else {
+            return filesize = (size / Math.pow(num, 2)).toFixed(2) + 'M';
+        }
+    }
+
+    // submit() {
+    //     let param = new FormData();
+    //     param.append('pk_org', this.props.orgVal.refpk)
+    //     param.append('file', this.state.file)
+    //     param.append('funCode', '60070employee_ncc')
+    //     param.append('sheetNames', this.state.targetKeys.join())
+    //     param.append('bl_pass_check', 'true')
+    //     param.append('import_mode', this.state.importMode)
+    //     proFetch({
+    //         url: '/nccloud/hrhi/dataio/ImportDataAction.do',
+    //         body: param,
+    //         headers: {
+    //             'Content-Type': 'multipart/form-data' //设置post文件的请求头
+    //         }
+    //     }).then((res) => {
+    //         if (res.success) {
+    //             this.uploadSuccess(res)
+    //         }
+    //     })
+    // }
+</script>
+
+</html>

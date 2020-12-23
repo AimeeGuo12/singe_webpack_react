@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="200" height="150" style="border: 1px dashed gray;"></canvas>
+</body>
+ <script>
+    window.onload = function () {
+        let cnv = document.getElementById('canvas')
+        let cxt = cnv.getContext('2d')
+
+        // 1. 画直线
+        cxt.moveTo(40, 60) // 将画笔移动到（40, 60）位置上，然后开始绘图
+        // cxt.lineTo(100, 60) // 绘制直线到（x，y）位置即可。
+        // cxt.lineTo(100, 30)
+        // cxt.lineTo(150, 75)
+        // cxt.lineTo(100, 120)
+        // cxt.lineTo(100, 90)
+        // cxt.lineTo(40, 90)
+        // cxt.lineTo(40, 60) // stroke()方法用于对路径进行描边
+        // cxt.stroke()
+
+        // 2. 矩形描边 填充
+        // 说明：x、y 表示矩形左上角的坐标，width、height 分别表示矩形的宽度和高度
+        //cxt.strokeStyle = 属性值   属性
+        // cxt.strokeRect(x, y, width, height)  方法
+        cxt.strokeStyle = 'red' // 先确定 Style 再绘制
+        cxt.strokeRect(50, 50, 80, 80)  // 到这只有边是红的
+        cxt.fillStyle = '#FFE8E8'
+        cxt.fillRect(50, 50, 80, 80) // 后两个组成的是一个红色区域没有边
+        
+        // 3. rect(x, y, width, height) 绘制矩形必须调用stroke()或fill()方法，才会绘制矩形
+        // 绘制描边矩形
+        cxt.strokeStyle = 'red'
+        cxt.rect(50, 50, 80, 80)
+        cxt.stroke()
+
+        // 绘制填充矩形
+        cxt.fillStyle = '#FFE8E8'
+        cxt.fill()
+
+        // 4. 清空矩形 来清空指定矩形区域
+        // cxt.clearRect(x, y, width, height)
+        // 我们可以使用下面的代码来清空整个 Canvas：
+        cxt.clearRect(0, 0, cnv.width, cnv.height)
+
+        // 5. 多边形 自己封装函数
+        function createPolygon(ctx, n, dx, dy, size) {
+            
+        }
+    }
+ </script>
+</html>

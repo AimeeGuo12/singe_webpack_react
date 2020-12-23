@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        .box {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            border: 1px solid red;
+        }
+        /*四边*/
+        .box .t,
+        .box .b,
+        .box .l,
+        .box .r {
+            position: absolute;
+            z-index: 1;
+            background: #666;
+        }
+        .box .l,
+        .box .r {
+            width: 5px;
+            height: 100%;
+            cursor: col-resize;
+        }
+        .box .t,
+        .box .b {
+            width: 100%;
+            height: 5px;
+            cursor: row-resize;
+        }
+        .box .t {
+            top: 0;
+        }
+        .box .b {
+            bottom: 0;
+        }
+        .box .l {
+            left: 0;
+        }
+        .box .r {
+            right: 0;
+        }
+        /*四角*/
+        .box .tl,
+        .box .bl,
+        .box .br,
+        .box .tr {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background: #fff;
+            border:1px solid #666;
+            z-index: 2;
+            cursor: nwse-resize
+        }
+        .box .tl,
+        .box .bl {
+            left: -5px;
+        }
+        .box .tr,
+        .box .br {
+            right: -5px;
+        }
+        .box .br,
+        .box .bl {
+            bottom: -5px;
+        }
+        .box .tl,
+        .box .tr {
+            top: -5px;
+        }
+        .box .tr,
+        .box .bl {
+            cursor: nesw-resize;
+        }
+        /*内核*/
+        .inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border: 1px solid black;
+        }
+        .box-header{
+            height: 30px;
+            background-color: blanchedalmond;
+        }
+        .box-content{
+            background-color: cornsilk;
+        }
+        .box-bottom{
+            width: 100%;
+            height: 30px;
+            position: absolute;
+            bottom: 0px;
+            border-top: 1px solid #eee;
+            
+            /* background-color: blanchedalmond; */
+        }
+    </style>
+</head>
+<body>
+    <!-- 将边线的缩放也加了 -->
+    <div class="box" id="odiv">
+        <span class="r"></span>
+        <span class="l"></span>
+        <span class="t"></span>
+        <span class="b"></span>
+        <span class="br"></span>
+        <span class="bl"></span>
+        <span class="tr"></span>
+        <span class="tl"></span>
+        <div class="inner">
+            <div class="box-header"></div>
+            <div class="box-content"></div>
+            <div class="box-bottom">
+                <button>确定</button>
+                <button>取消</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            var oDiv = document.getElementsByTagName('div')[0];
+            oDiv.style.width = '500px';
+            var aSpan = oDiv.getElementsByTagName('span');
+            for (var i = 0; i < aSpan.length; i++) {
+                dragFn(aSpan[i]);
+            }
+            function dragFn(obj) {
+                obj.onmousedown = function (ev) {
+                    var oEv = ev || event;
+                    oEv.stopPropagation();
+                    var oldWidth = oDiv.offsetWidth; // 对象整体的实际宽度，包滚动条等边线，会随对象显示大小的变化而改变。
+                    var oldHeight = oDiv.offsetHeight;
+                    var oldX = oEv.clientX; // 浏览器左上角到鼠标当前位置的x轴距离
+                    var oldY = oEv.clientY;
+                    // offsetLeft：
+                    // 获取自身左外边框到定位父级的左内边框的距离
+                    // offsetTop
+                    // 获取自身上外边框到定位父级的上内边框的距离
+                    // 只能获取不能修改
+                    var oldLeft = oDiv.offsetLeft;
+                    var oldTop = oDiv.offsetTop;
+
+                    document.onmousemove = function (ev) {
+                        var oEv = ev || event;
+                        let disY = (oldTop + (oEv.clientY - oldY)),
+                            disX = (oldLeft + (oEv.clientX - oldLeft));
+                        if(disX>oldLeft+oldWidth){
+                            disX=oldLeft+oldWidth
+                        }
+                        if(disY>oldTop+oldHeight){
+                            disY=oldTop+oldHeight
+                        }
+                        if (obj.className == 'tl') {
+                            oDiv.style.width = oldWidth - (oEv.clientX - oldX) + 'px';
+                            oDiv.style.height = oldHeight - (oEv.clientY - oldY) + 'px';
+                            oDiv.style.left = disX + 'px';
+                            oDiv.style.top = disY + 'px';
+                        }
+                        else if (obj.className == 'bl') {
+                            oDiv.style.width = oldWidth - (oEv.clientX - oldX) + 'px';
+                            oDiv.style.height = oldHeight + (oEv.clientY - oldY) + 'px';
+                            oDiv.style.left = disX + 'px';
+                            oDiv.style.bottom = oldTop + (oEv.clientY + oldY) + 'px';
+                        }
+                        else if (obj.className == 'tr') {
+                            oDiv.style.width = oldWidth + (oEv.clientX - oldX) + 'px';
+                            oDiv.style.height = oldHeight - (oEv.clientY - oldY) + 'px';
+                            oDiv.style.right = oldLeft - (oEv.clientX - oldX) + 'px';
+                            oDiv.style.top = disY + 'px';
+                        }
+                        else if (obj.className == 'br') {
+                            oDiv.style.width = oldWidth + (oEv.clientX - oldX) + 'px';
+                            oDiv.style.height = oldHeight + (oEv.clientY - oldY) + 'px';
+                            oDiv.style.right = oldLeft - (oEv.clientX - oldX) + 'px';
+                            oDiv.style.bottom = oldTop + (oEv.clientY + oldY) + 'px';
+                        }
+                        else if (obj.className == 't') {
+                            oDiv.style.height = oldHeight - (oEv.clientY - oldY) + 'px';
+                            oDiv.style.top = disY + 'px';
+                        }
+                        else if (obj.className == 'b') {
+                            oDiv.style.height = oldHeight + (oEv.clientY - oldY) + 'px';
+                            oDiv.style.bottom = disY + 'px';
+                        }
+                        else if (obj.className == 'l') {
+                            oDiv.style.height = oldHeight + 'px';
+                            oDiv.style.width = oldWidth - (oEv.clientX - oldX) + 'px';
+                            oDiv.style.left = disX + 'px';
+                        }
+                        else if (obj.className == 'r') {
+                            oDiv.style.height = oldHeight + 'px';
+                            oDiv.style.width = oldWidth + (oEv.clientX - oldX) + 'px';
+                            oDiv.style.right = disX + 'px';
+                        }
+                    };
+
+                    document.onmouseup = function () {
+                        document.onmousemove = null;
+                    };
+                    return false;
+                };
+            }
+            document.getElementById("odiv").onmousedown = function (ev) {
+                var oevent = ev || event;
+                oevent.preventDefault();
+
+                var distanceX = oevent.clientX - oDiv.offsetLeft;
+                var distanceY = oevent.clientY - oDiv.offsetTop;
+
+                document.onmousemove = function (ev) {
+                    var oevent = ev || event;
+                    oDiv.style.left = oevent.clientX - distanceX + 'px';
+                    oDiv.style.top = oevent.clientY - distanceY + 'px';
+                };
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                };
+            }
+        };
+    </script>
+</body>
+</html>

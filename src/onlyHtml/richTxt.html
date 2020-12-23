@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .edit-area {
+            width: 500px;
+            min-height: 200px;
+            border: 1px solid;
+        }
+    </style>
+</head>
+<!-- https://blog.csdn.net/weixin_43606158/article/details/89531070 -->
+<!-- 要完成的功能：
+富文本编辑器的功能实现
+选中后映射属性到属性栏
+实现复制粘贴保留支持样式
+涉及到的知识：
+富文本编辑器底层实现原理（contenteditable属性）
+鼠标选中时获取选中文本的样式集合(getSelection)
+过滤粘贴样式(递归)
+遇到的坑：
+获取鼠标选中文本的样式 -->
+<!-- 富文本编辑器的实现方法有俩种，以前是通过iframe的document，
+    而现在基本上都是使用document.execCommand()，现在很多的富文本
+    编辑器的实现原理都是使用的这个方法，比如wangEditor,UEidtor,WYSIWYG -->
+<body>
+    <div id='rich-edit'> 
+        <!-- contenteditable属性为true时将div变为可编辑状态 -->
+        <!-- 当鼠标或者键盘在div进行操作的时候就会触发此事件而后获取选中文本或者光标前一个文本的信息。 -->
+        <div class='edit-area' contenteditable="true"
+        onmouseup="getSelectionMessage()"
+        onkeyup="getSelectionMessage()"
+        onpaste="filterPasteContent()"
+        >编辑区域</div>  
+        <div class='edit-tools'>
+            <button onclick="handleStyle('Bold')">加粗</button>
+            <button onclick="handleStyle('Italic')">斜体</button>
+            <button onclick="handleStyle('Underline')">下划线</button>
+            <button onclick="handleStyle('StrikeThrough')">删除线</button><br/>
+            字间距值：<input type="text" id="letterSpacingValue" value="50">px
+            <button onclick="setStyle('letterSpacing')">设置字体间距</button><br/>
+        </div>
+    </div>
+</body>
+<script >
+    // import sanitizeHtml from 'sanitize-html';
+
+//设置简单的字体风格
+    function handleStyle(type,val) {
+        console.log(val)
+        // 改变选中文本的不同状态。核心功能是document.execCommand() 这个方法。
+        // 而我们使用document.execCommand(‘StyleWithCSS’,true,true) 是为了不用b标签，i标签等等。
+        // 当然了，这句话也可以忽略，省略之后使用document.execCommand()命令的时候会将选中文本变成指定的标签，
+        // 比如你是 bold命令 那么就会变成 b 标签，如果是 italic命令 就会变成 i 标签等等，
+        // 而使用了document.execCommand(‘StyleWithCSS’,true,true)这个命令是为了将标签统一变成 span标签，然后在span标签里面 添加style属性 放样式
+            document.execCommand('StyleWithCSS',true,true)
+            document.execCommand(type,false,val)
+        }
+
+        //设置比较复杂的字体样式，笔者只写了一个字间距，如果向设置其他的可按此规则重复利用此模块
+        function setStyle(type) {
+            let letterSpacingVal = document.getElementById('letterSpacingValue').value;
+            document.execCommand('styleWithCSS',true,true)
+            document.execCommand('Bold')
+            //获取选中的内容节点
+            let select = document.getSelection().anchorNode.parentElement;
+            select.style[type] = val + 'px';
+            document.execCommand('Bold')
+        }
+
+        function getSelectionMessage() {
+            let arr = ['Bold','Italic','Underline','StrikeThrough'];
+            let buttons = document.getElementsByTagName('button');
+            arr.forEach((item, index) => {
+                console.log(document.queryCommandState(item))
+                document.queryCommandState(item)
+                ? buttons[index].style.color = 'red'
+                : buttons[index].style.color = 'black'
+            })
+        }
+        function filterPasteContent(event) {
+            event.preventDefault();		//阻止浏览器默认行为
+            event.stopPropagation();		//阻止事件冒泡
+            let data = event.clipboardData.getData('text/html');		//获取粘贴板的信息
+            //通过sanitizeHtml包的方法去过滤标签和样式
+            data = sanitizeHtml(data, {
+                allowedTags: ['b','i','u','strike','font','ol','ul','div'],
+                allowedAttributes: {
+                'font': ['color','face','font','style'],
+                }
+            })
+            const selection = window.getSelection();		//获取对象
+
+            if (!selection.rangeCount) return false;		//如果没有就退出，不进行操作
+
+            let div = document.createElement("div");		//创建一个div
+            div.innerHTML = data;		//div的innerHTML就是我们刚刚过滤完粘贴信息的内容
+            
+            selection.getRangeAt(0).insertNode(div);		//将刚刚的div插入到富文本编辑器中
+        }
+
+</script>
+</html>
