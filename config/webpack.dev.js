@@ -3,7 +3,9 @@ const merge = require('webpack-merge');
 const path = require('path');
 const config = {
     output: {
-        filename: "[name].js",
+        filename: "[name].js", // 
+        // 不要在开发环境使用 [chunkhash]/[hash]/[contenthash]，因为不需要在开发环境做持久缓存，而且这样会增加编译时间，开发环境用 [name] 就可以了
+        // chunkhash基于的是每一个 chunk 内容的改变，如果是该 chunk 所属的内容发生了变化，那么只有该 chunk 的输出文件的哈希会发生变化，其它的不会。这听上去符合我们的需求。
         // publicPath: "/dist/"
     },
 // 配置webpack-dev-server

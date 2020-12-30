@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Count numbers: <output id="result"></output></p>
+    <button onclick="startWorker()">start Worker</button>
+    <button onclick="stopWorker()">stop Worker</button>
+    <input type="text" value=""/>
+    <!-- 
+        主线程中使用的主要API
+        Worker.onerror：指定 error 事件的监听函数。
+        Worker.onmessage：指定 message 事件的监听函数，发送过来的数据在Event.data属性中。
+        Worker.onmessageerror：指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
+        Worker.postMessage()：向 Worker 线程发送消息。
+        Worker.terminate()：立即终止 Worker 线程。
+     -->
+</body>
+<script>
+// https://blog.csdn.net/lqlqlq007/article/details/79824122
+let w;
+function startWorker () {
+  if (typeof(Worker) !== "undefined") {
+    if (typeof(w) === "undefined") {
+      w = new Worker("demo_workers.js");
+    }
+    w.onmessage = function (event) {
+      document.getElementById("result").innerHTML = event.data;
+    };
+  } else {
+    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+  }
+}
+
+function stopWorker () {
+  w.terminate();
+}
+</script>
+</html>
