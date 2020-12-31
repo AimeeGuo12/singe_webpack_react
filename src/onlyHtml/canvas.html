@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
+    <!-- <script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script> -->
+<script src="./cosmos_canvas.js" type="text/javascript" charset="utf-8"></script>
 <body>
-    <canvas id="canvas" width="200" height="150" style="border: 1px dashed gray;"></canvas>
+    <canvas id="canvas" width="400" height="400" style="border: 1px dashed gray;"></canvas>
 </body>
  <script>
     window.onload = function () {
@@ -28,20 +29,20 @@
         // 说明：x、y 表示矩形左上角的坐标，width、height 分别表示矩形的宽度和高度
         //cxt.strokeStyle = 属性值   属性
         // cxt.strokeRect(x, y, width, height)  方法
-        cxt.strokeStyle = 'red' // 先确定 Style 再绘制
-        cxt.strokeRect(50, 50, 80, 80)  // 到这只有边是红的
-        cxt.fillStyle = '#FFE8E8'
-        cxt.fillRect(50, 50, 80, 80) // 后两个组成的是一个红色区域没有边
+        // cxt.strokeStyle = 'red' // 先确定 Style 再绘制
+        // cxt.strokeRect(50, 50, 80, 80)  // 到这只有边是红的
+        // cxt.fillStyle = '#FFE8E8'
+        // cxt.fillRect(50, 50, 80, 80) // 后两个组成的是一个红色区域没有边
         
         // 3. rect(x, y, width, height) 绘制矩形必须调用stroke()或fill()方法，才会绘制矩形
         // 绘制描边矩形
-        cxt.strokeStyle = 'red'
-        cxt.rect(50, 50, 80, 80)
-        cxt.stroke()
+        // cxt.strokeStyle = 'red'
+        // cxt.rect(50, 50, 80, 80)
+        // cxt.stroke()
 
-        // 绘制填充矩形
-        cxt.fillStyle = '#FFE8E8'
-        cxt.fill()
+        // // 绘制填充矩形
+        // cxt.fillStyle = '#FFE8E8'
+        // cxt.fill()
 
         // 4. 清空矩形 来清空指定矩形区域
         // cxt.clearRect(x, y, width, height)
@@ -50,7 +51,53 @@
 
         // 5. 多边形 自己封装函数
         function createPolygon(ctx, n, dx, dy, size) {
+
+        }
+
+        cxt.fillStyle = '#272369'
+        cxt.fillRect(0, 0, cnv.width, cnv.height)
+            cxt.stroke()
+
+        starSky(cxt, cnv)
+
+
+        // 
+        function starSky(cxt, cnv) {
+            cxt.save()
+            cxt.beginPath()
+            for (let j=0; j<=100; j++) {
+                let R = Math.random()*10;
+               
+                let x = Math.random()*cnv.width;
+                let y = Math.random()*cnv.height;
+                console.log(R, x, y)
+                drawStar(cxt, R, x, y)
+            }
+            cxt.restore()
+
+            // cxt.rect(0, 0, cnv.width, cnv.height)
+            // let hue = 230;//230
+            // let half = cnv.width / 2;
+            // let gradient2 = cxt.createRadialGradient(half, half, 0, half, half, half);
+            // gradient2.addColorStop(0.025, '#CCC');
+            // gradient2.addColorStop(0.1, 'hsl(' + hue + ', 61%, 33%)');
+            // gradient2.addColorStop(0.25, 'hsl(' + hue + ', 64%, 6%)');
+            // gradient2.addColorStop(1, 'transparent');
             
+           
+        }
+        // drawStar(cxt, 100, 100, 100)
+        function drawStar(cxt, R, x, y) {
+            cxt.beginPath()
+            for (let i=0; i<=5; i++) {
+                cxt.lineTo(Math.cos(((18+i*72)*2*Math.PI)/360)*R+x, Math.sin(((18+i*72)*2*Math.PI)/360)*R+y)
+                cxt.lineTo(Math.cos(((54+i*72)*2*Math.PI)/360)*R/2+x, Math.sin(((54+i*72)*2*Math.PI)/360)*R/2+y)
+            }
+            cxt.fillStyle = '#f2f433e6'
+            cxt.strokeStyle = '#f2f433'
+            cxt.fill()
+            cxt.stroke()
+            cxt.closePath()
         }
     }
  </script>
