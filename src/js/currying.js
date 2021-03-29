@@ -60,7 +60,7 @@ f1 = function(a, b) {
 }
 // 实现
 // 初步封装
-export const currying = function(fn) {
+ const currying = function(fn) {
     // args 获取第一个方法内的全部参数
     var args = Array.prototype.slice.call(arguments, 1)
     return function() {
@@ -109,11 +109,6 @@ function progressCurrying(fn, args) {
 // add(1, 2, 3)(4) = 10;
 // add(1)(2)(3)(4)(5) = 15;
 
-// 实现一个add方法，使计算结果能够满足如下预期：
-// add(1)(2)(3) = 6;
-// add(1, 2, 3)(4) = 10;
-// add(1)(2)(3)(4)(5) = 15;
-
 function add() {
     // 第一次执行时，定义一个数组专门用来存储所有的参数
     var _args = Array.prototype.slice.call(arguments);
@@ -138,3 +133,19 @@ console.log(add(1, 2, 3)(4))            // 10
 console.log(add(1)(2)(3)(4)(5))          // 15
 console.log(add(2, 6)(1))                // 9
 
+
+// function curry(fn, args1 = []) { // 默认值设为[]，防止访问args1.length报错
+//     // fn.length的长度是形参的长度 4  
+//     // 就是将参数都拼到args1中，如果没拼完就继续拼，否则执行fn
+//     return fn.length === args1.length ? fn.apply(null, args1) : function (...args2) { // args2就是传入的参数1，2 ，3，4
+//       return curry(fn, args1.concat(args2)) 
+//     }
+//   }
+//   function add(a, b, c, d) {
+//     console.log(a + b + c + d)
+//   }
+  
+//   let curryAdd = curry(add)
+//   curryAdd(1, 2)(3)(4) // 10
+//   curryAdd(1)(2)(3)(4)
+//   curryAdd(1, 2, 3, 4)

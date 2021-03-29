@@ -1,24 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #container {
+            width: 100%;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            color: #fff;
+            background-color: #444;
+            font-size: 30px;
+        }
+    </style>
+
 </head>
+
 <body>
     <div>
+        <input type="checkbox" id="1"></input>1
+        <input type="checkbox" id="2"></input>2
+        <input type="checkbox" id="3"></input>3
+        <input type="checkbox" id="4"></input>4
+        <input type="checkbox" id="5"></input>5
+        <input type="checkbox" id="6"></input>6
+        <input type="checkbox" id="7"></input>7
+        <input type="checkbox" id="8"></input>8
+        <input type="checkbox" id="9"></input>9
         <button>点击</button>
+        <div id="container"></div>
     </div>
 </body>
- <!-- <script src='./dynamicProgramming.js'></script> -->
- <script src="./promise.all.js"></script>
- <script>
-    //  window.onload = function() {
-    //     var str = new Array(100000000).join("*");
+<!-- <script src='./dynamicProgramming.js'></script> -->
+<!-- <script src="./currying.js"></script> -->
+<!-- <script src="./call.js"></script> -->
+<!-- <script src="./promise.js"></script> -->
+<!-- <script src="./copy.js"></script> -->
+<script src='./dynamicProgramming.js'></script>
+<script>
+    window.onload = function () {
+        // var str = new Array(100000000).join("*");
 
-    //     setInterval(() => {
-    //         console.log(str[0]);
-    //     }, 1000);
-    // }
- </script>
+        // setInterval(() => {
+        //     console.log(str[0]);
+        // }, 1000);
+
+        // var arr = new Uint16Array(8);  // 生成8个随机数
+        // var crypto = window.crypto || window.webkitCrypto
+        //     || window.mozCrypto || window.oCrypto || window.msCrypto;
+        // window.crypto.getRandomValues(arr);
+        // for (var i = 0; i < arr.length; i++) {
+        //     console.log(arr[i]);
+        // }
+    }
+</script>
+
 </html>

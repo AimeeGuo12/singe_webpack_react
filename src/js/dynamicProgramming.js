@@ -27,6 +27,8 @@ function Fibonacci (n) {
     }
 }
 
+
+
 // 2、自底向上的动态规划
 // 备忘录法还是利用了递归，上面算法不管怎样，计算 fib(6) 的时候最后
 // 还是要计算出 fib(1), fib(2), fib(3) ……那么何不先计算出 fib(1), fib(2), fib(3) 
@@ -43,10 +45,67 @@ function Fibonacci2(n) {
     return f[n]
 }
 
+// 补充一种es6的写法
+function Fibonacci1 (n, fib1 = 1, fib2 =1) {
+    if (n <= 2) return 1;
+   for (let i = 0; i < n.length; i++) {
+       [fib1, fib2]= [fib2, fib1+fib2]
+   }
+   return fib2
+}
+
 // 使用时机
 https://www.kancloud.cn/chenmk/web-knowledges/1250927
 
-window.onload = function() {
-    console.log(Fibonacci(6))
-    console.log(Fibonacci2(6))
+
+
+
+// 上楼梯 n阶  有一次1阶和一次2阶两种方式
+// n = 1 ; f(n) = 1;
+// n=2; f(n) = 2;
+// 思路： n阶时  是第 n-1阶和n-2阶方法得和
+
+function f(n) {
+    let res = 0;
+    if (n<1) return 0;
+    if (n===1) return 1;
+    if (n===2) return 2;
+    let n1 = 1, n2 = 2;
+    for (let index = 3; index <= n; index++) {
+        res = n1 + n2;
+        n1 = n2;
+        n2 = res;
+    }  
+    return res;
 }
+
+
+
+
+// 找数组连续子集相加得最大值
+function getMaxAddValue(arr) {
+    let array = new Array(arr.length);
+    array[0] = arr[0]
+    let res=arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if(res + arr[i] > 0 && arr[i] > 0) {
+            array[i] = res + arr[i]
+            res = res + arr[i]
+        } else {
+            array[i] = 0;
+            res = 0;
+        }
+        
+    }
+    return Math.max(...array) // 
+    // 或者  Math.max.apply(null, numArray);
+}
+
+
+
+
+console.log(Fibonacci(6))
+console.log(Fibonacci2(6))
+console.log('..............')
+console.log(f(1),f(2),f(3),f(4),f(5),f(6),f(7),f(8),f(9))
+console.log(getMaxAddValue([2, 3 , 6, -10, 3, 6]))  // 11
