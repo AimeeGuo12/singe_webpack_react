@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: yellowgreen;
+        }
+        #box2{
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: rosybrown;
+        }
+    </style>
+</head>
+<body>
+    <div id='box'>文字</div>
+    <div id='box2'>文字</div>
+    <script>
+        // 面向过程的方法  根据效果一步一步来实现
+        {
+            let box = document.getElementById('box');
+            let startMouse = {} // 记录鼠标位置
+            let startE1 = {};
+            function css(el, attr, val) {
+                if (val === undefined) {
+                    return parseFloat(getComputedStyle(el)[attr])
+                }
+                el.style[attr] = val + 'px';
+            }
+            let move = (e) => {
+                // 记录当前鼠标位置
+                let nowMouse = {
+                    x: e.clientX,
+                    y: e.clientY
+                }
+                // 计算鼠标  移动距离=当前位置 - 按下时的位置
+                let disMouse = {
+                    x: nowMouse.x - startMouse.x,
+                    y: nowMouse.y - startMouse.y
+
+                }
+                // 设置元素的新位置
+                css(box, 'left', startE1.x + disMouse.x)
+                css(box, 'top', startE1.y + disMouse.y)
+                console.log(disMouse)
+            };
+            box.addEventListener('mousedown', (e) => {
+                // 按下时候的鼠标的位置
+                startMouse = {
+                    x: e.clientX,
+                    y: e.clientY
+                }
+                // 按下时候元素的位置
+                startE1 = {
+                    x: css(box, 'left'),
+                    y: css(box, 'top')
+                }
+                // 按下时添加一个move
+                document.addEventListener('mousemove', move);
+                document.addEventListener('mouseup', () => {
+                    // 抬起的时候删除move
+                    document.removeEventListener('mousemove', move);
+                }, {once: true}) // once: true 事件只执行一次
+                e.preventDefault();
+            })
+        }
+            
+        // 面向对象开发  // 先写好对象，直接new new Drag(box)
+        {
+        /*
+            抽象：
+            拖动之后元素跟随移动
+            封装： 封装成类
+            单一原则
+            鼠标移动的距离就是元素左边和上边移动的距离，两个是一样的
+        */
+          class Drag{ 
+            // startMouse = {}; 公有字段 在实例化对象中也能正常使用，作为对象的一个普通属性存在。使用的时候要this.startMouse
+            // startE1 = {};
+            // 私有字段，只能在类中使用，不能在对象上使用
+            #el = null // 使用: this.#el
+            constructor(el, option) {
+                this.#el = el;
+                this.startMouse = {};
+                this.startE1 = {};
+                this.start();
+                this.option = option;
+            }
+            // 按下时
+            start() {
+                let move = (e) => {
+                    this.move(e); // 如果直接写到事件监听里，就相当于被document调用了，this指向document
+                }
+                this.#el.addEventListener('mousedown', (e) => {
+                    console.log(this) // 指向实例化对象
+                    // 鼠标位置
+                    this.startMouse = {
+                        x: e.clientX,
+                        y: e.clientY
+                    }
+                    // 元素位置
+                    this.startE1 = this.getOffset();
+                    this.ondragStart && this.ondragStart(e);
+                    document.addEventListener('mousemove',move);
+                    document.addEventListener('mouseup', () => {
+                        document.removeEventListener('mousemove', move);
+                        this.end(e);
+                    }, {once: true});
+        
+                    e.preventDefault();
+                })
+            }
+            // 移动中
+            move(e) {
+                // 记录当前鼠标位置
+                let nowMouse = {
+                    x: e.clientX,
+                    y: e.clientY
+                }
+                // 计算鼠标  移动距离=当前位置 - 按下时的位置
+                let disMouse = {
+                    x: nowMouse.x - this.startMouse.x,
+                    y: nowMouse.y - this.startMouse.y
+                }
+                this.setOffset(disMouse)
+                this.ondrag && this.ondrag(e);
+            }
+            // 抬起以后要做的事情
+            end(e) {
+                this.ondragEnd && this.ondragEnd(e);
+            }
+
+            getOffset() {
+                return {
+                    x: parseFloat(getComputedStyle(this.#el)['left']),
+                    y: parseFloat(getComputedStyle(this.#el)['top'])
+                }
+            }
+            // 设置元素的位置
+            setOffset(dis) {
+                // with(this.el.style) {
+                //     left = dis.x + this.startE1.x + 'px',
+                //     top = dis.y + this.startE1.y + 'px'
+                // }
+                this.#el.style.left = dis.x + this.startE1.x + 'px',
+                this.#el.style.top = dis.y + this.startE1.y + 'px'
+            }
+          }
+          let box = document.getElementById('box');
+          let d = new Drag(box)
+        //   console.log(d.startMouse) // 公有字段
+
+        let box2 = document.getElementById('box2');
+        let d2 = new Drag(box2);
+        let box2Clone = null; // 加拖拽虚影
+        d2.ondragStart = function() { // 缺点是只能绑定一次
+            box2Clone = box2.cloneNode(true);
+            console.log('开始拖拽');
+            document.body.appendChild(box2Clone);
+            box2.style.opacity = .5;
+        }
+        d2.ondrag= function() {
+            console.log('拖拽中');
+        }
+        d2.ondragEnd = function() {
+            console.log('拖拽结束');
+            document.body.removeChild(box2Clone);
+            box2.style.opacity = 1;
+        }
+        }
+    </script>
+</body>
+</html>
+

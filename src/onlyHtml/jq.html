@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq的簡單實現</title>
+</head>
+<body>
+    <button>1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>4</button>
+    <script>
+        // js不能同时操作一组元素
+// class Query{
+//     constructor(arg) {
+//         // 判断参数类型
+//         if(typeof arg === "string") { // 字符串类型，就先获取元素然后通过setElement把元素都绑到this上
+//             let ele = document.querySelectorAll(arg); 
+//             this.setElement(ele);
+//         } else if(typeof arg === 'object') { // 对象类型，已经是Node了，就直接通过setElement把元素绑定到this上
+//             this.setElement(arg);
+//         } else if (typeof arg === 'function') { // 传入function，就在文档加载完后执行这个函数
+//             // DOMContentLoaded 文档读完
+//             // onload 资源也加载完
+//             window.addEventListener('DOMContentLoaded', arg)
+//         }
+//     }
+//     setElement(eles) {
+//         if(eles.length === undefined) { //eles只是一个元素时
+//             this[0] = eles;
+//             this.length = 1;
+//         }else {
+//             for(let i = 0; i<eles.length; i++) {
+//                 this[i] = eles[i];
+//             }
+//             this.length = eles.length;
+//         }
+//     }
+//     click(fn) { // click放原型里面  // 给JQ对象上所有元素添加一个点击的处理
+//         console.log('aaa')
+//         for(let i = 0; i < this.length; i++) { 
+//             this[i].addEventListener('click', fn) //依次绑定，所以jq可以同时操作一组元素
+//         }
+//     }
+// }
+
+// function $2(...arg) {
+//     return new Query(...arg)
+// }
+
+// console.log($2('button'))
+
+
+// jq的链式调用
+
+// js不能同时操作一组元素
+class Query{
+    constructor(arg, root) { // root在操作当前次的时候，传入上一个操作对象
+        root = root || $(document, {});
+        this["prevObject"] = root; // 把上一次的操作对象存入this的prevObject属性上
+        // 判断参数类型
+        if(typeof arg === "string") { // 字符串类型，就先获取元素然后通过setElement把元素都绑到this上
+            let ele = document.querySelectorAll(arg); 
+            this.setElement(ele);
+        } else if(typeof arg === 'object') { // 对象类型，已经是Node了，就直接通过setElement把元素绑定到this上
+            this.setElement(arg);
+        } else if (typeof arg === 'function') { // 传入function，就在文档加载完后执行这个函数
+            // DOMContentLoaded 文档读完
+            // onload 资源也加载完
+            window.addEventListener('DOMContentLoaded', arg)
+        }
+    }
+    // 添加事件
+    on(eventNames, fn) {
+        // eventNames 中可以存放多个事件名称，以空格隔开
+        eventNames = eventNames.trim().split(" ");
+        eventNames = eventNames.filter(item => item) // " " => false, 空字符串过滤
+        for (let index = 0; index < this.length; index++) {
+            for (let j = 0; j < eventNames.length; j++) {
+               this[index].addEventListener(eventNames[j], fn) 
+            }
+        }
+    }
+    eq(index) {
+        // 注意当用户调用eq方法之后，这会操作对象会进行改变，返回把上一次的this传入
+        return $(this[index], this); // 返还jq对象，如果不写$ 返回的是dom对象，不能继续调用jq的方法
+        // this就是root?
+    }
+    // 返还上次操作的对象、
+    end() {
+        return this["prevObject"];
+    }
+    setElement(eles) {
+        if(eles.length === undefined) { //eles只是一个元素时
+            this[0] = eles;
+            this.length = 1;
+        }else {
+            for(let i = 0; i<eles.length; i++) {
+                this[i] = eles[i];
+            }
+            this.length = eles.length;
+        }
+    }
+    click(fn) { // click放原型里面  // 给JQ对象上所有元素添加一个点击的处理
+        console.log('aaa')
+        for(let i = 0; i < this.length; i++) { 
+            this[i].addEventListener('click', fn) //依次绑定，所以jq可以同时操作一组元素
+        }
+        // this指向实例化对象
+        return this;  // 把这个实例化对象接着返回
+    }
+    // css方法
+     css(...arg){
+         // 获取样式
+         if(typeof arg[0] === 'string') {
+             if(arg.length > 1) {
+                 // 两个参数  设置样式
+                 for (let i = 0; i < this.length; i++) {
+                    Query.setStyle(this[i], arg[0], arg[1])
+                 }
+             } else{
+                 // 获取样式
+                 return Query.getStyle(this[0],arg[0])
+             }
+         }else if (typeof arg[0] === 'object') {
+             // 批量设置样式
+             for (let i = 0; i < this.length; i++) {
+                 for(let s in arg[0]) {
+                    Query.setStyle(this[i], s, arg[0][s])
+                 }
+             }
+         }
+         return this; // 链式操作
+     }
+
+     static setStyle(el, attr, val) {
+         if(attr in $.cssHooks) { // 如果用户已经设置了hooks，则直接调用hooks，把设置权交还给用户
+            $.cssHooks[attr].set(el,val)
+         } else {
+            el.style[attr] = val;
+         }
+     }
+     static getStyle(el, attr) {
+        if(attr in $.cssHooks) { // 如果用户已经设置了hooks，则直接调用hooks，把设置权交还给用户
+            $.cssHooks[attr].get(el)
+         } else {
+            return getComputedStyle(el)[attr];
+         }
+     }
+}
+
+function $(...arg) {
+    return new Query(...arg)
+}
+$.cssHooks={
+    width: {
+        set(el, val) { // 设置width时会触发的方法
+            el.style.transition = '.2s';
+            el.style.width = val;
+            setTimeout(() => {
+                el.style.transition = 'none'
+            }, 100)
+        },
+        get(el) { // 获取样式时触发
+            return getComputedStyle(el)['width']
+        }
+    }
+}
+
+console.log($('button').css('height', 100).eq(0).css('width', 100)) // eq(0) 第一个元素
+$('button').css('background', 'red').eq(0).end()  // end()返还eq（）操作之前的对象 
+$('button').css('height', '100px').eq(0).css('width', '100px')
+    </script>
+</body>
+</html>

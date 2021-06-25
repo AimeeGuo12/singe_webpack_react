@@ -1,0 +1,78 @@
+doctype html
+//- 标签通过缩进来表现闭合 属性用括号
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Document
+        //- style后面加个.
+        style. 
+            .mydiv{
+                width: 200px;
+                height: 200px;
+                background: red;
+            }
+    body 
+        h1 我是标题
+        div 我是div
+        //- 类名写在括号
+        div(class="mydiv") 我是类名mydiv
+            span 我是span
+        //- 简写div
+        .mydiv2 我是div2 
+        #myid 我是divid
+        //- 行内样式
+        div(style={width: "100px", height: "100px", background: "blue"}) haha
+
+        //- 
+            多行注释
+            哈哈哈
+        
+        // 我是html注释
+        // 
+            我是多行
+        div 
+            | hello
+        //- 定义变量
+        - let str = "你好"
+        //-插值表达式 将str插入到p标签中
+        p #{str}  
+        //- 显示传入的数据
+        p #{data} 
+        //- 循环遍历
+        ul
+            each item, index in users
+                li 姓名是: #{item.name}; 年龄是：#{item.age}
+
+        //- for循环
+        - for(let i = 0; i < 2; i++)
+            span 我是循环出来的数据#{i}
+
+        //- switch 这里是case when
+        - let num = 1
+            case num 
+                when 1
+                    p num是1
+                when 2
+                    p num 是2
+                default 
+                    p num 是其他值
+
+        //- 混入/合模式  宏模式 相当于定义一个函数
+        mixin mydiv 
+            div 我是常用的div 
+        //-调用
+        +mydiv
+
+        mixin pet(name, sex)
+            p 这是一只#{name}, 它的性别是#{sex}
+        +pet('狗狗', "gong")
+        +pet('mao', 'mu')
+
+        //-引入公用模板
+        include common.pug 
+
+        //- 引入js
+        script(type='text/javascript').
+            console.log(111)

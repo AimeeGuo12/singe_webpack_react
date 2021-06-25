@@ -1,0 +1,95 @@
+<!-- requestAnimationFrame -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #e{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            /* 设置或检索对象的缩放比例 */
+            zoom: 1; 
+        }
+    </style>
+</head>
+<body>
+    <div id='e'></div>
+</body>
+<script>
+    // js实现一个无限循环的动画  使用定时器
+    let e = document.getElementById('e');
+    let flag = true;
+    let left = 0;
+    function render() {
+        if(flag == true) {
+            if (left >= 100) {
+                flag = false;
+            }
+            e.style.left = `${left++}px`;
+        } else {
+            if(left <=0) {
+                flag = true
+            }
+            e.style.left = `${left--}px`;
+        }
+    }
+    // setInterval(() => {
+    //     render()
+    // }, 1000/60) // 大多数屏幕渲染的时间间隔是每秒60帧
+
+    // 使用raF效果
+    (function animloop(){
+        render();
+        rafId = window.requestAnimationFrame(animloop)
+        //如果left等于50 停止动画
+        if(left == 50){
+            cancelAnimationFrame(rafId)
+        }
+
+    })()
+
+//     console.log('1');
+
+// setTimeout(function() {
+//     console.log('2');
+//     Promise.resolve().then(function() {
+//         console.log('3');
+//     })
+//     new Promise(function(resolve) {
+//         console.log('4');
+//         resolve();
+//     }).then(function() {
+//         console.log('5')
+//     })
+// })
+// Promise.resolve().then(function() {
+//     console.log('6');
+// })
+// new Promise(function(resolve) {
+//     console.log('7');
+//     resolve();
+// }).then(function() {
+//     console.log('8')
+// })
+
+// setTimeout(function() {
+//     console.log('9');
+//    Promise.resolve().then(function() {
+//         console.log('10');
+//     })
+//     new Promise(function(resolve) {
+//         console.log('11');
+//         resolve();
+//     }).then(function() {
+//         console.log('12')
+//     })
+// })
+</script>
+</html>

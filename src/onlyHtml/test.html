@@ -3,6 +3,18 @@
 <head>
 <meta charset="utf-8">
 <title>测试区域</title>
+<style>
+    #clonetest{
+        height: 100px;
+        width: 100px;
+        background-color: red;
+    }
+    #clonetest2{
+        height: 100px;
+        width: 100px;
+        background-color: greenyellow;
+    }
+</style>
 <script>
 function changeStyle(){
     var x=document.getElementById("myframe");
@@ -60,6 +72,77 @@ if (appN && appN[1]) {
 </iframe>
 <br><br>
 <input type="button" onclick="changeStyle()" value="修改背景颜色">
+<div id='clonetest'>你好啊</div>
+<div id='clonetest2'>你也好啊</div>
+<script>
+    // window.onload=function(){
+    //     {let cloneTest = document.getElementById('clonetest');
+    // let cloneNode = cloneTest.cloneNode(true);
+    // document.body.appendChild(cloneNode)}
+    // }
+//  {
+//     let map = new Map();
+//     map.set('aa', 1);
+//     map.set('bb', 2);
+//     for (let [name, value] of map) {
+//         console.log(name + '' + value)
+//     }
+//  }
+//  {
+//      function Obj(value) {
+//          this.value = value;
+//          this.next = null;
+//      }
+//      Obj.prototype[Symbol.iterator] = function() {
+//          let iterator = {
+//              next:next
+//          }
+//          let current = this;
+//          function next() {
+//             if (current) {
+//                 let value = current.value;
+//                 current = current.next;
+//                 return {
+//                     done: false,
+//                     value: value
+//                 }
+//             } else {
+//                 return {
+//                     done: true
+//                 }
+//             }
+//          }
+//          console.log(iterator)
+//          return iterator;
+//      }
 
+//      let one = new Obj(1);
+//      let two = new Obj(2);
+//      let three = new Obj(3);
+//      one.next = two;
+//      two.next = three;
+//      for (let i of one) {
+//          console.log(i)
+//      }
+//  }
+ {
+    function *read(){
+    console.log(1);
+    var content1 = yield 'qs';
+    console.log(content1);
+    var content2 = yield '9';
+    console.log(content2);
+    return content2;
+}
+
+
+var it = read();
+var a = it.next() //输出 1  a:{value:'qs',done:false}
+var b = it.next('hello')//输出hello  b:{value:'9',done:false}
+var c = it.next('generator')//输出generator  c:{value:'generator',done:true}
+var d = it.next('123')//输出generator  c:{value:undefined,done:true}
+console.log(a)
+ }
+</script>
 </body>
 </html>

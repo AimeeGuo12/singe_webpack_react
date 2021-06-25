@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>1</button>
+    <button>1</button>
+    <button>1</button>
+    <button>1</button>
+<script>
+    class JQuery {
+        click() {
+            console.log('click');
+        }
+    }
+    function $() {
+        // return {
+        //     click() {
+        //         console.log('click');
+        //     }
+        // }
+        return new JQuery()
+    }
+
+    function Person(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    let p = new Person('A', 18)
+    console.log(Person.name)
+    console.log(p.name)
+</script>
+</body>
+</html>
