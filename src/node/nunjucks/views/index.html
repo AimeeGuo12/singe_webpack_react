@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>nihao </div>
+    <span>用户名是{{userName}}</span>
+    <!-- 判断语句 -->
+    {# if elseif else endif判断语句 ,所有nunjucks中的语句都必须有结束标识#}
+    {# 我是nunjucks得注释 #}
+    {% if num>3 %}
+    <p>num值大于三</p>
+    {% elseif num<3 %}
+    <p>num值小于三</p>
+    {% else %}
+    <p>num值等于三</p>
+    {% endif %}
+
+
+    {# for in循环 #}
+    <ul>
+        {% for item in arr %}
+        <li>{{item.name}}, {{item.age}}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- 过滤器 replace() 和capitalize(整个变量首字母大写)-->
+    {# 过滤器：替换一段文字等，官网有很多种过滤器写法，可多个过滤器并列书写。 将world替换成 my world ,并且将首字母大写capitalize#}
+    {{ str | replace("world","my world") | capitalize}} 
+    <!-- capitalize没起作用 -->
+
+
+    {# 继承模板 需要获取父级模板中的数据时，通过{{super()}}即可获取 #}
+    <!-- 注意除了继承的父级模内容和自己更改的内容，其他内容都会被覆盖掉 -->
+    {% extends 'parent.html' %}
+    {% block left %}
+    {# 可以替换父级里面得内容#}
+        左边内容son
+    {% endblock %}
+    {% block right %}
+        右边内容son
+    {% endblock %}
+
+    {% block somevalue %}
+    <!-- 直接继承父亲得数据 -->
+        <span>haha</span>
+        {{ super() }}
+    {% endblock %}
+
+    <!-- Macro（宏标签） -->
+    <!-- 可以给macro的函数给出默认值 -->
+    {# macro宏标签 #}
+    {% macro pet(name="老鼠",sex="母") %}
+        <p>我是一只{{name}},我的性别是{{sex}}
+        {# 注意一定要有结束标签endmacro #}
+    {% endmacro %}
+    <!-- 调用 -->
+    {{pet("狗狗","公")}}
+    {# 不给参数，输出默认值 #}
+    {{pet()}}
+
+    <!-- include/import -->
+    {% include "footer.html" %}
+
+    <!-- import可引入变量或函数 -->
+    {# import引入：可引入变量或函数 #}
+    {% import 'import.html' as obj %}
+    {{obj.pet("小老虎","母")}}
+    {{obj.person("王明","男")}}
+</body>
+</html>
