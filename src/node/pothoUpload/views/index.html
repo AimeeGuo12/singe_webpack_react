@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='index.js'></script>
+</head>
+<body>
+    <div>
+        <input type="file" class='myfile'>
+        <ul>
+            {% for item in pothoes %}
+            <li>
+                <img src={{item.path}} alt="">
+                <span>{{item.name}}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <button>点击上传</button>
+        <button>取消上传</button>
+    </div>
+    <div>
+        进度条：
+        <process value="2" max="100"></process>
+        &nbsp;&nbsp;<span class="progressSpan">10%</span>&nbsp;&nbsp;
+    速度：<span class="speed">20b/s</span><br><br>
+    </div>
+</body>
+</html>
