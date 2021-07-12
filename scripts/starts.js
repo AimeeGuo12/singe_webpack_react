@@ -11,6 +11,6 @@ const options = Object.assign({}, webpackConfig.devServer, {
     open: true
 })
 const server = new webpackDevServer(compiler, options);
-server.listen(3008, '127.0.0.1', () => {
-    console.log('Starting server on http://localhost:8080');
+server.listen(9000, '127.0.0.1', () => {
+    console.log('Starting server on http://localhost:9000');
 })

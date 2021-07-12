@@ -11,10 +11,10 @@ import ReactDom from 'react-dom';
 // import Tree from './components/Tree';
 // import AsyncTree from './components/myAsyncTree/TreeSyncTest';
 // import {currying} from './js/currying'
-
+import ReactApp from './react/01module/index';
 // 源码部分
-import ReduxPage from './originalcode/pages/ReduxPage';
-import ReduxPageInput from './originalcode/pages/ReduxPage-Input-10';
+// import ReduxPage from './originalcode/pages/ReduxPage';
+// import ReduxPageInput from './originalcode/pages/ReduxPage-Input-10';
 
 // 路由
 import RouterBream from './router/index';
@@ -38,7 +38,8 @@ class App extends React.Component{
                 <Router> 
                     <RouterBream/>
                 </Router>
-                    
+
+                <ReactApp></ReactApp>
                
             </div>
         )
