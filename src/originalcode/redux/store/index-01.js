@@ -1,7 +1,7 @@
-// import {createStore, applyMiddleware} from '../aRedux';
+import {createStore, applyMiddleware} from '../aRedux';
 // import thunk from "redux-thunk";
 // import logger from "redux-logger";
-import {createStore, combineReducers} from "redux";
+// import {createStore, combineReducers} from "redux";
 // 定义一个reducer
 function countReducer(state = 0, action) {
     switch (action.type) {
@@ -16,12 +16,12 @@ function countReducer(state = 0, action) {
     }
 }
 
-// const store = createStore(countReducer, applyMiddleware(thunk, logger))
-const store = createStore(
-    combineReducers({
-      count: countReducer
-    })
-  );
+const store = createStore(countReducer, applyMiddleware(thunk, logger))
+// const store = createStore(
+//     combineReducers({
+//       count: countReducer
+//     })
+//   );
 export default store;
 
 // 打日志

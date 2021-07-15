@@ -11,13 +11,18 @@ import ReactDom from 'react-dom';
 // import Tree from './components/Tree';
 // import AsyncTree from './components/myAsyncTree/TreeSyncTest';
 // import {currying} from './js/currying'
-import ReactApp from './react/01module/index';
+import ReactApp from './react/02redux/index';
 // 源码部分
 // import ReduxPage from './originalcode/pages/ReduxPage';
 // import ReduxPageInput from './originalcode/pages/ReduxPage-Input-10';
-
+import ReactReduxPage from './react/03react-redux/index'
 // 路由
 import RouterBream from './router/index';
+import RouterPage from './react/04react-router/index';
+import RouteChildren from './react/04react-router/router-childre';
+import RouteComponent from './react/04react-router/router-component';
+import RouterSearchPage from './react/04react-router/router-search';
+import AppPage from './react/04react-router/work/index';
 class App extends React.Component{
     render = () => {
         return (
@@ -35,12 +40,19 @@ class App extends React.Component{
                 {/* Redux学习 */}
                 {/* <ReduxPage></ReduxPage> */}
                 {/* <ReduxPageInput></ReduxPageInput> */}
-                <Router> 
+                {/* <ReactReduxPage></ReactReduxPage> */}
+                {/* <Router> 
                     <RouterBream/>
-                </Router>
+                </Router> */}
 
-                <ReactApp></ReactApp>
-               
+                {/* <ReactApp></ReactApp> */}
+               <br/>
+               {/* 路由 */}
+               {/* <RouterPage></RouterPage> */}
+               {/* <RouteChildren></RouteChildren>
+               <RouteComponent></RouteComponent>
+               <RouterSearchPage></RouterSearchPage> */}
+               <AppPage></AppPage>
             </div>
         )
     }
