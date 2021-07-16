@@ -22,7 +22,9 @@ import RouterPage from './react/04react-router/index';
 import RouteChildren from './react/04react-router/router-childre';
 import RouteComponent from './react/04react-router/router-component';
 import RouterSearchPage from './react/04react-router/router-search';
-import AppPage from './react/04react-router/work/index';
+// import AppPage from './react/04react-router/work/index';
+import AppPage from './react/05g-react-router/index';
+
 class App extends React.Component{
     render = () => {
         return (
