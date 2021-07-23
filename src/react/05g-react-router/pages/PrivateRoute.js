@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {Route, Redirect} from "react-router-dom";
+// import {Route, Redirect} from "react-router-dom";
+import {Route, Redirect} from '../g-react-router-dom/index';
 import {connect} from "react-redux";
 
 export default connect(

@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {createBrowserHistory} from "history";
-import matchPath from "./matchPath";
-import RouterContext from './RouterContext';
+import {RouterContext} from './RouterContext';
 export default class BrowserRouter extends Component{
     static computeRootMatch(pathname){
         return {
@@ -15,7 +14,9 @@ export default class BrowserRouter extends Component{
         super(props);
         this.history = createBrowserHistory();
         this.state = {
-            location: this.props.location
+            location: this.props.location || {
+                pathname: ''
+            }
         }
         this.unlisten = this.history.listen(location => {
             this.setState({
@@ -30,15 +31,15 @@ export default class BrowserRouter extends Component{
     }
     render() {
         return (
-            <RouterContext.Provide
+            <RouterContext.Provider
                 value = {{
                     history: this.history,
                     location: this.state.location,
-                    match: BrowserRouter.computeRootMatch(this.state.location.pathname)
+                    match: this.state.location && BrowserRouter.computeRootMatch(this.state.location.pathname) || {}
                 }}
             >
                 {this.props.children}
-            </RouterContext.Provide>
+            </RouterContext.Provider>
         )
     }
 }
