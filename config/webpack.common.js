@@ -67,7 +67,8 @@ function webpackCommonConfigCreator(options) {
     return {
         mode: options.mode,
         // entry: "./src/index.js",
-        entry: './src/react/07fiber-diff/index.js',
+        // entry: './src/react/07fiber-diff/index.js',
+        entry: './src/for wr/index.js',
         output: {
             filename: "bundle.js",
             path: path.resolve(__dirname, '../build'),

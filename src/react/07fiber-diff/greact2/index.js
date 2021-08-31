@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-07-26 21:45:14
+ * @LastEditTime: 2021-07-28 15:25:18
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /singe_webpack_react/src/react/07fiber-diff/greact2/index.js
+ */
 // babel以后。jsx就变为createElement(type, props, ...children) 这种形式，
 // 其返回值是一个js对象树，就是所谓的虚拟DOM
 
@@ -12,10 +20,6 @@ function createElement(type, props, ...children) {
         delete props.__source;
         delete props.__self;
     }
-    // let defaultProps = {};
-    // if (type && type.defaultProps) {
-    //     defaultProps = {...type.defaultProps}
-    // }
     // Resolve default props
     if (type && type.defaultProps) {
         const defaultProps = type.defaultProps;
@@ -29,7 +33,6 @@ function createElement(type, props, ...children) {
     return {
         type: type,
         props: {
-            // ...defaultProps,
             ...props,
             //!这里的处理与源码稍有不同，源里的话，只有一个元素，children是对象，多于一个的时候，是数组
             children: children.map(child =>
