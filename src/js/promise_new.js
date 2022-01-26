@@ -44,26 +44,35 @@ const REJECTED = 'rejected'; // 失败态
  * @param {*} reject 
  */
 const resolvePromise = (promise2, x, resolve, reject) => {
-    // 循环引用 自己等待自己完成  错误实现
+    // 决议程序规范：如果 resolve 结果和 promise2相同则reject，这是为了避免死循环
     if (promise2 === x) {
         return reject(new TypeError('Chaining cycle detected for promise #<Promise>'))
     }
 
-    let called; // 变量控制成功就不能失败
+    let called; // 变量控制成功就不能失败  是为了确保 resolve、reject 不要被重复执行
     // 后续的条件严格判断 保证代码能和别的库一起使用
     if ((typeof x === 'object' && x !== null) || typeof x === 'function') {//可能是个promise
-        // 继续判断
+        // 决议程序规范：如果x是一个对象或者函数，则需要额外处理下
         try{
+            // 首先是看它有没有 then 方法（是不是 thenable 对象）
             let then = x.then;
+            // 如果是 thenable 对象，则将promise的then方法指向x.then。
             if (typeof then === 'function') { // 说明x是个promise
-                then.call(x, y => {// 根据promise的状态决定是成功还是失败 
+                // 不要写成x.then  直接then.call就可以了 因为x.then 会再次取值,有可能回报错
+                then.call(x, y => {// 根据promise的状态决定是成功还是失败
+                    // 如果已经被 resolve/reject 过了，那么直接 return
                     if (called) return;
                     called = true;
+                     // 进入决议程序（递归调用自身）
                     resolvePromise(promise2, y, resolve, reject);
                 }, err => {
+                    // 这里 called 用法和上面意思一样
+                    if (called) return;
+                    called = true;
                     reject(err);
                 } )
-            } else { // {then: '23} 普通对象
+            } else { // {then: '23'} 普通对象
+                // 如果then不是function，用x为参数执行promise
                 if (called) return;
                 called = true;
                 resolve(x);
@@ -74,9 +83,14 @@ const resolvePromise = (promise2, x, resolve, reject) => {
             reject(err)
         }
     } else { // 普通值， 直接返回
+         // 如果x不是一个object或者function，用x为参数执行promise
         resolve(x)
     }
 }
+const isPromise = obj => typeof obj === 'function' || typeof obj === 'object' && obj !== null && obj.then && typeof obj.then === 'function';
+// 使用的时候
+// new MyPromise(resolve, reject)
+// 所以 executor传入的是resolve, reject
 class MyPromise{
     // 创建一个Promise实例时，都会立即执行executor函数(处理器函数)，
     //executor函数传递两个参数，resolve和reject，
@@ -92,14 +106,25 @@ class MyPromise{
             this.value = res;
             this.status = RESOLVED;
             // 成功以后运行回调
-            this.onResolvedCallbacks.forEach(fn => fn()) //依次执行
+            this.onResolvedCallbacks.forEach(fn => fn(res)) //依次执行
+            // // 用 setTimeout 延迟队列任务的执行
+            // setTimeout(function(){
+            //     // 批量执行 resolved 队列里的任务
+            //     this.onResolvedQueue.forEach(resolved => resolved(self.value)); 
+            // });
+
+            // queueMicrotask()创建一个微任务  如果需要延迟  可以使用微任务 不用setTimeout
+            // 效果和使用Promise一样的，都是将任务加入微任务队列
+            // 待宏任务结束后依次执行
+            // queueMicrotask(fn);
+            // Promise.resolve().then(fn);
         }
         //异常时执行，将状态改变为 rejected，并且将失败的原因返回
         let reject = (err) => {
             if (this.statue !== PENDING) return; // 状态一旦改变，就不会再变
             this.value = err;
             this.status = REJECTED;
-            this.onRejectedCallbacks.forEach(fn => fn())
+            this.onRejectedCallbacks.forEach(fn => fn(err))
         }
         // try、catch捕获异常，如果错误，执行reject方法
         try{
@@ -113,11 +138,26 @@ class MyPromise{
         // 没有传的话， 默认返回
         onFullfilled = typeof onFullfilled === 'function'? onFullfilled : v => v;
         onRejected = typeof onRejected === 'function'? onRejected : e => {throw e};
+/**
+         * promise2 = promise1.then(function(value) {
+                return 4
+                }, function(reason) {
+                throw new Error('sth went wrong')
+            })
+            对于上面代码的返回 promise2的值取决于then里面函数的返回值；如果promise1被resolve了，promise2的将被4 resolve，
+            如果promise1被reject了，promise2将被new Error('sth went wrong') reject。
+            所以，我们需要在then里面执行onResolved或者onRejected，并根据返回值(标准中记为x)来确定promise2的结果，并且，
+            如果onResolved/onRejected返回的是一个Promise，promise2将直接取这个Promise的结果。
+         */
         let promise2 = new MyPromise((resolve, reject) => {// 为了实现链式调用
             if(this.status === RESOLVED) {//执行成功
+                // 包装成异步任务，确保决议程序在 then 后执行
                 setTimeout(()=> {
+                // 如果promise1(此处即为this/self)的状态已经确定并且是fulfilled，我们调用onResolved/onFullfilled
+                // 因为考虑到有可能throw，所以我们将其包在try/catch块里
                     try {
                         let x = onFullfilled(this.value);
+                        // 决议程序
                         resolvePromise(promise2, x, resolve, reject);
                     } catch(err) {
                         reject(err);
@@ -135,6 +175,7 @@ class MyPromise{
                 }, 0);
             }
             if (this.status === PENDING) {
+                // 若是 pending 状态，则只对任务做入队处理
                 this.onResolvedCallbacks.push(() => {
                     setTimeout(() => {
                         try {
@@ -234,4 +275,6 @@ MyPromise.defer = MyPromise.deferred = function () {
     return dfd
   }
 
-module.exports = MyPromise
+// module.exports = MyPromise
+
+let p = new MyPromise()

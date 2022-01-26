@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <!-- <form action=""> -->
+            接口地址：<input type="text" id='in1'>
+            参数：<textarea name="" id="param1" cols="30" rows="10"></textarea>
+            <button id='btn1'>请求</button>
+            返回： <div id='back1'></div>
+        <!-- </form> -->
+
+    </div>
+</body>
+<script src="./platform/resource/polyfill.js"></script>
+<script src="./platform/library/index.js"></script>
+<script src="./platform/resource/ca/ca0.js"></script>
+<script src="./platform/resource/ca/ca1.js"></script>
+<script src="./platform/resource/ca/ca2.js"></script>
+<script src="./platform/resource/ca/nccsign.js"></script>
+<script src="./platform/resource/ca/sha256.js"></script>
+<script src="./platform/api/index.js"></script>
+<script src="./platform/base/index.js"></script>
+<script src="./platform/template/index.js"></script>
+<script src="./platform/form/index.js"></script>
+<script src="./platform/table-core/index.js"></script>
+<script src="./platform/simple-table/index.js"></script>
+<script src="./platform/edit-table/index.js"></script>
+<script src="./platform/card-table/index.js"></script>
+<script src="./platform/transfer-table/index.js"></script>
+<script src="./platform/tree-table/index.js"></script>
+<script src="./platform/search/index.js"></script>
+<script src="./platform/components/index.js"></script>
+<script src="./platform/nc-lightapp-front.js"></script>
+<script>
+    let in1 = document.getElementById('in1');
+    let param1 = document.getElementById('param1');
+    let back1 = document.getElementById('back1');
+    let btn1 = document.getElementById('btn1');
+    btn1.addEventListener('click', function() {
+        console.log(in1)
+        console.log(param1)
+        if (in1.value) {
+            
+        }
+    })
+
+    function ajax() {
+
+    }
+</script>
+</html>

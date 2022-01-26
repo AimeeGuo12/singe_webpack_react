@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>浏览器画布</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .cell {
+        width: 6px;
+        height: 6px;
+        background-color: gray;
+        border-bottom: solid 1px white;
+        border-right: solid 1px white;
+        vertical-align: middle;
+      }
+      #container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 701px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <button onclick="saveMap()">保存</button>
+    <button onclick="clearMap()">清除</button>
+    <script>
+      let map = localStorage.map
+        ? JSON.parse(localStorage.map)
+        : new Array(10000).fill(0);
+      const render = (reset = false) => {
+        let container = document.getElementById("container");
+        for (let x = 0; x < 100; x++) {
+          for (let y = 0; y < 100; y++) {
+            let cell = document.createElement("div");
+            cell.classList.add("cell");
+            if (map[x * 100 + y] == 1) {
+              cell.style.backgroundColor = "black";
+            }
+            cell.addEventListener("mouseover", () => {
+              if (mouse) {
+                if (clear) {
+                  cell.style.backgroundColor = "";
+                  map[x * 100 + y] = 0;
+                } else {
+                  cell.style.backgroundColor = "black";
+                  map[x * 100 + y] = 1;
+                }
+              }
+            });
+            if (!reset) {
+              container.appendChild(cell);
+            } else {
+              const childNode = document.getElementsByClassName("cell");
+              for (let i = 0; i < childNode.length; i++) {
+                container.removeChild(childNode[i]);
+              }
+            }
+          }
+        }
+        let mouse = false;
+        let clear = false;
+        document.addEventListener("mousedown", (e) => {
+          mouse = true;
+          clear = e.which === 3;
+        });
+        document.addEventListener("mouseup", (e) => {
+          mouse = false;
+          clear = e.which === 3;
+        });
+        document.addEventListener("contextmenu", (e) => e.preventDefault());
+      };
+
+      const saveMap = () => {
+        localStorage.setItem("map", JSON.stringify(map));
+      };
+      const clearMap = () => {
+        localStorage.clear();
+        render(true);
+      };
+      render();
+    </script>
+  </body>
+</html>

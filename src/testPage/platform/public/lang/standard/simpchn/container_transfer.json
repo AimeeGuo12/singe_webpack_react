@@ -1,0 +1,15 @@
+{
+    "container-transfer-0001": "来源",
+    "container-transfer-0002": "目标",
+    "container-transfer-0003": "暂无数据",
+    "container-transfer-0004": "提示词",
+    "container-transfer-0005": "条数据",
+    "container-transfer-right": "加入已选",
+    "container-transfer-right-all": "全部加入已选",
+    "container-transfer-left-all": "全部移除已选",
+    "container-transfer-left": "移除已选",
+    "container-transfer-up": "上移",
+    "container-transfer-up-top": "置顶",
+    "container-transfer-down": "下移",
+    "container-transfer-down-bottom": "置底"
+}

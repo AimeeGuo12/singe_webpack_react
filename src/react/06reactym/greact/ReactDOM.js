@@ -1,7 +1,8 @@
 // !vnode代表虚拟dom节点
 // !node代表真实dom节点
+
 /**
- * 
+ * 将虚拟 DOM 转换为真实 DOM 并添加到容器中
  * @param {Object} vnode 就是createElement返回的js对象树,是一个虚拟dom. 
  *                          vnode={type: '', props: {属性, children}}
  * @param {*} container 

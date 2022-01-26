@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        window.onload = function () {
+            let request = window.indexedDB.open('wps', 1);
+            let db;
+            request.onerror = function (e) {
+                console.log("wps数据库打开失败");
+                console.log('失败原因：', e)
+            }
+            request.onupgradeneeded = function (event) {
+                console.log('创建数据库表单数据')
+                console.log('onupgradeneeded', event)
+                db = event.target.result;
+                let objectStore
+                // 建立taskpane 数据联查表
+                if (!db.objectStoreNames.contains('taskpane')) {
+                    objectStore = db.createObjectStore('taskpane', { keyPath: 'id' });
+                    objectStore.createIndex('allData', 'allData', { unique: true });
+                    objectStore.put({id: 'keyq', allData: 'aaa'})
+                }
+            }
+                request.onsuccess = function (e) {
+                    console.log('打开数据库成功！')
+                    db = request.result;
+                }
+
+            }
+
+    </script>
+</body>
+
+</html>

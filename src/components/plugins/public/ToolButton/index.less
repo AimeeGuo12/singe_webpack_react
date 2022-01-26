@@ -1,0 +1,53 @@
+@btn-height: 30px;
+
+.tool-btn {
+    // width: @btn-height;
+    // height:@btn-height;
+    // line-height: @btn-height;
+    text-align: center;
+    cursor: pointer;
+    font-size: 20px !important;
+    margin-left: 6px;
+    border-radius: 4px;
+
+    .nc-button-wrapper {
+        border: none;
+        box-shadow: none;
+        background-color: initial;
+        color: #000000;
+        margin-left: 0;
+    }
+
+    .nc-button-wrapper:disabled,
+    .nc-button-wrapper:disabled:hover,
+    .u-button:disabled,
+    .u-button:disabled:hover,
+    .nc-button-wrapper:focus,
+    .u-button:focus {
+        background-color: initial;
+        border: none;
+    }
+
+    .disabled {
+        color: #BFBFBF;
+        cursor: not-allowed;
+
+        &:hover {
+            color: #a3a3a3;
+            border-color: #e0e0e0;
+        }
+    }
+}
+
+.tool-btn .active {
+
+    .u-button {
+        border-color: red !important;
+        color: red !important;
+    }
+}
+
+.tool-btn-list {
+    display: flex;
+    flex-direction: row;
+}

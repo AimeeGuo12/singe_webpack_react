@@ -24,7 +24,8 @@ import RouteComponent from './react/04react-router/router-component';
 import RouterSearchPage from './react/04react-router/router-search';
 // import AppPage from './react/04react-router/work/index';
 import AppPage from './react/05g-react-router/index';
-
+import FuckEvent from './react/hecheng'
+import Study from './components/Study/Study.js'
 class App extends React.Component{
     render = () => {
         return (
@@ -54,7 +55,9 @@ class App extends React.Component{
                {/* <RouteChildren></RouteChildren>
                <RouteComponent></RouteComponent>
                <RouterSearchPage></RouterSearchPage> */}
-               <AppPage></AppPage>
+               {/* <AppPage></AppPage> */}
+               {/* <FuckEvent></FuckEvent> */}
+               <Study/>
             </div>
         )
     }

@@ -55,6 +55,56 @@
         // for (var i = 0; i < arr.length; i++) {
         //     console.log(arr[i]);
         // }
+
+        // 类型判断函数
+        // function typeOf(obj) {
+        //     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+        // }
+        // Object.prototype.toString.call(null) // '[object Null]'
+        // Object.prototype.toString.call([]) // '[object Array]'
+        // console.log(typeOf([])) // array
+        // console.log(typeOf('www')) // string
+        // console.log(typeOf({})) // object
+        // console.log(typeOf(null)) // null
+        // console.log(typeOf(undefined)) // undefined
+        // console.log(typeOf(123)) // number 
+        // console.log(typeOf(function(){})) // function
+
+        console.log('1.Start');
+        let flag = true;
+        function foo(fn) {
+            console.log('2.Function foo is on');
+            if (flag) {
+                setTimeout(fn);
+                flag = false;
+            } else {
+                // queueMicrotask()创建一个微任务
+                // 效果和使用Promise一样的，都是将任务加入微任务队列
+                // 待宏任务结束后依次执行
+                queueMicrotask(fn);
+                // Promise.resolve().then(fn);
+            }
+        }
+
+        foo(() => {
+            console.log('3.setTimeout is on');
+        });
+
+        foo(() => {
+            console.log('4.Promise is on');
+        });
+
+        console.log('5.End');
+
+
+        function test () {
+            return {a: 2, b: 3}
+        }
+        function teste() {
+            let {a, b} = test()
+            console.log(a,b)
+        }
+        teste()
     }
 </script>
 
