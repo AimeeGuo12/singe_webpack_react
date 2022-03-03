@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .top {
+            width: 100%;
+            height: 46px;
+            background-color: aqua;
+            /*内容居中*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .middle {
+            width: 100%;
+            height: 300px;
+            float: left;
+            background-color: darkgoldenrod;
+        }
+        .middle-inner{
+            margin-left: 200px;
+            margin-right: 200px;
+        }
+        .left {
+            float: left;
+            width: 200px;
+            height: 300px;
+            margin-left: -100%;
+            background-color: blueviolet;
+        }
+
+        .right {
+            float: left;
+            width: 200px;
+            height: 300px;
+            margin-left: -200px;
+            background-color: chocolate;
+        }
+
+        .footer {
+            width: 100%;
+            height: 80px;
+            /* overflow: hidden; */
+            clear: both;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: aquamarine;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class='top'>top</div>
+        <div class='container'>
+            <div class='middle'>
+                <div class="middle-inner">
+                    middle
+                </div>
+            </div>
+            <div class='left'>left</div>
+            <div class='right'>right</div>
+        </div>
+        <div class='footer'>footer</div>
+    </div>
+</body>
+
+</html>

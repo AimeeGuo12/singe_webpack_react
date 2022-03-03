@@ -20,7 +20,7 @@ function debounce(fn, wait) {
 }
 
 // 解决this和event不正确的问题
-function debounce2() {
+function debounce2(fn, wait) {
     let timer;
     return function() {
         let context = this

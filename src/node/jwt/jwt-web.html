@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div>
+        测试
+        <button id='btn' onclick="login()"> login </button>
+        用户名： <input type="text" id="username">
+        密码： <input type="password" name="psd" id="psd">
+        记住我？<input type="checkbox" id="remember">
+        <button id='btn' onclick="register()"> register </button>
+        用户名： <input type="text" id="username1">
+        密码： <input type="password" name="psd" id="psd1">
+    </div>
+    <script>
+        // window.onload = function () {
+        function login() {
+            let username = document.getElementById('username').value;
+            let psd = document.getElementById('psd').value;
+            let remember = document.getElementById('remember').value;
+            let data = {
+                username: username,
+                password: psd,
+                remember: remember ? 'on' : 'off'
+            }
+            let xhr = new XMLHttpRequest()
+            xhr.open('post', 'http://localhost:8989/api/login', false)
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+            xhr.setRequestHeader("Authorization", 'BEARER' + localStorage.getItem('token'))
+            xhr.onreadystatechange = function () {
+                // 判断服务器是否响应，判断异步对象的响应状态
+                if (xhr.status == 200 && xhr.readyState == 4) {
+                    console.log(xhr.responseText);
+                    if (xhr.responseText.data.token) {
+                        localStorage.setItem('token', xhr.responseText.data.token)
+                    }
+                }
+            }
+            xhr.send(JSON.parse(JSON.stringify(data)))
+        }
+        function register() {
+            let username = document.getElementById('username1').value;
+            console.log(username)
+            let psd = document.getElementById('psd1').value;
+            // let remember = document.getElementById('remember').value;
+            let data = {
+                username: username,
+                password: psd,
+                // remember: remember? 'on': 'off'
+            }
+            let xhr = new XMLHttpRequest()
+            xhr.open('post', 'http://localhost:8989/api/checkUser')
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                // 判断服务器是否响应，判断异步对象的响应状态
+                if (xhr.status == 200 && xhr.readyState == 4) {
+                    console.log(xhr.responseText);
+                    let data = JSON.parse(xhr.responseText)
+                    if (data.data.token) {
+                        localStorage.setItem('token', data.data.token)
+                    }
+                }
+            }
+            xhr.send(JSON.parse(JSON.stringify(data)))
+        }
+        // }
+
+    </script>
+</body>
+
+</html>

@@ -25,7 +25,7 @@ import RouterSearchPage from './react/04react-router/router-search';
 // import AppPage from './react/04react-router/work/index';
 import AppPage from './react/05g-react-router/index';
 import FuckEvent from './react/hecheng'
-import Study from './components/Study/Study.js'
+import BigData from './components/Study/BigData.js'
 class App extends React.Component{
     render = () => {
         return (
@@ -57,7 +57,7 @@ class App extends React.Component{
                <RouterSearchPage></RouterSearchPage> */}
                {/* <AppPage></AppPage> */}
                {/* <FuckEvent></FuckEvent> */}
-               <Study/>
+               <BigData/>
             </div>
         )
     }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <video id="myVideo" width="320" height="240" src="" muted autoplay="autoplay" controls>
+    </video>
+    <script>
+        var v = ["https://www.runoob.com/try/demo_source/movie.mp4", "http://www.w3school.com.cn/example/html5/mov_bbb.mp4", "http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4"]; //视频列表链接
+        var s = v.length; // 获取视频列表数
+        var li = 0; //定义一个变量用来记录当前播放的视频唯一标识，默认第一个播放
+        document.getElementById("myVideo").src = v[li];
+        function formp4()
+        {
+            var x = document.getElementById("myVideo").ended;
+            if (x == true) {
+                li = li + 1;
+                if (li > s - 1) {
+                    li = 0;
+                } //判断下一个视频是否大于视频列表数，如果大于就回0从列表第一个开始播放，由于数组默认是从0开始排序所以判断的时候要-1
+                document.getElementById("myVideo").src = v[li];
+            } //判断当前播放的视频已播放结束时将li加+，播放下一个视频
+        }
+        setInterval(function() {
+            formp4();
+        }, 500); //每500毫秒执行一次
+    </script>
+
+</body>
+
+</html>
