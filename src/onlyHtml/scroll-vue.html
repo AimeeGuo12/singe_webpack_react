@@ -45,6 +45,10 @@
   <body>
     <div id="app" v-cloak>
       <div class="list-view" ref="scrollBox" @scroll="handleScroll">
+        <!-- 这个空元素的目的高度是所有元素的高度，目的是为了撑起盒子，然后出现很长的滚动条。如果不加的话，
+          滚动条就会很短，直接拉到底部，不再有反应。
+        因为这个的实现是基于元素的高度，不是用滚动到底，再加载下面数据的原理。
+        -->
         <div
           class="list-view-phantom"
           :style="{
@@ -64,11 +68,11 @@
         </div>
       </div>
     </div>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
-    <script src='https://unpkg.com/vue/dist/vue.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script>
       new Vue({
         el: "#app",
+        // 为了让虚拟列表可以正确的出现滚动条，使用了 Vue.js 的计算属性 contentHeight 来计算滚动区域的真正高度
         computed: {
           contentHeight() {
             return this.data.length * this.itemHeight + "px";
@@ -86,17 +90,21 @@
         },
         methods: {
           updateVisibleData(scrollTop = 0) {
+            // clientHeight: 代表元素的高度，padding但不包括border、水平滚动条、margin的元素的高度。对于inline的元素这个属性一直是0，单位px，只读元素。
             const visibleCount = Math.ceil(
-              this.$refs.scrollBox.clientHeight / this.itemHeight
+              this.$refs.scrollBox.clientHeight / this.itemHeight //取得可见区域的可见列表项数量
             );
-            const start = Math.floor(scrollTop / this.itemHeight);
-            const end = start + visibleCount;
-            this.visibleData = this.data.slice(start, end);
+            const start = Math.floor(scrollTop / this.itemHeight); // 取得可见区域的起始数据索引
+            const end = start + visibleCount; // 取得可见区域的结束数据索引
+            this.visibleData = this.data.slice(start, end); // 计算出可见区域对应的数据，让 Vue.js 更新
+            // 把可见区域的 top 设置为起始元素在整个列表中的位置（使用 transform 是为了更好的性能）
+            // translate3d（）函数在3D空间内移动一个元素的位置。这个移动由一个三维向量来表达，分别表示他在三个方向上移动的距离。
             this.$refs.content.style.webkitTransform = `translate3d(0, ${
               start * this.itemHeight
             }px, 0)`;
           },
           handleScroll() {
+            // 垂直方向滚动出去的距离
             const scrollTop = this.$refs.scrollBox.scrollTop;
             this.updateVisibleData(scrollTop);
           },
