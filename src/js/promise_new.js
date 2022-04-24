@@ -44,16 +44,29 @@ const REJECTED = 'rejected'; // 失败态
  * @param {*} reject 
  */
 const resolvePromise = (promise2, x, resolve, reject) => {
-    // 决议程序规范：如果 resolve 结果和 promise2相同则reject，这是为了避免死循环
+    // 决议程序规范：如果 resolve 结果和 promise2相同则reject，这是为了避免死循环 循环引用
     if (promise2 === x) {
         return reject(new TypeError('Chaining cycle detected for promise #<Promise>'))
     }
 
     let called; // 变量控制成功就不能失败  是为了确保 resolve、reject 不要被重复执行
+     // 有个实现里加了这个。。。为啥？https://www.cnblogs.com/wenruo/p/9369122.html
+            // if (x instanceof MyPromise) {
+            //     if (x.status === PENDING) {
+            //         x.then(y => {
+            //             resolvePromise(promise, y, resolve, reject)
+            //         }, e => {
+            //             reject(e)
+            //         })
+            //     } else {
+            //         x.then(resolve, reject)
+            //     }
+            // }
     // 后续的条件严格判断 保证代码能和别的库一起使用
     if ((typeof x === 'object' && x !== null) || typeof x === 'function') {//可能是个promise
         // 决议程序规范：如果x是一个对象或者函数，则需要额外处理下
         try{
+           
             // 首先是看它有没有 then 方法（是不是 thenable 对象）
             let then = x.then;
             // 如果是 thenable 对象，则将promise的then方法指向x.then。
@@ -106,6 +119,7 @@ class MyPromise{
             this.value = res;
             this.status = RESOLVED;
             // 成功以后运行回调
+            // 回调要异步执行  应该放到setTimeout里
             this.onResolvedCallbacks.forEach(fn => fn(res)) //依次执行
             // // 用 setTimeout 延迟队列任务的执行
             // setTimeout(function(){
@@ -128,6 +142,7 @@ class MyPromise{
         }
         // try、catch捕获异常，如果错误，执行reject方法
         try{
+            // 同步执行
             executor(resolve, reject)// 立即执行
         } catch(err) {
             reject(err)
@@ -248,6 +263,18 @@ class MyPromise{
                 processData(i, result)
             }
         }
+        })
+    }
+    race(promises) {
+        if (promises.length === 0) return []
+        return new Promise((resolve, reject) => {
+            for(let i = 0; i < promises.length; i++) {
+                Promise.resolve(promises[i]).then(data => {
+                    resolve(data)
+                }, err => {
+                    reject(err)
+                })
+            }
         })
     }
 

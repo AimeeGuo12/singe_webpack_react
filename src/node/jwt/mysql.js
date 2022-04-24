@@ -53,3 +53,16 @@ module.exports = {
     addData: addData,
     queryData: queryData
 }
+
+// sql传参
+// 建立一个变量  存储sql语句 ?是一个占位符 用来传参
+// let sql = 'select * from user where id = ?';
+
+// // 连接 有一个query方法  用来执行sql语句  如果传参就要启用第二个参数 第二个参数如果是单个可以直接传字符串 多个就用数组 我们这里直接用数组
+// conn.query(sql,[10],(err,result) => {
+//     if(err) throw err;
+//     console.log(result);
+// })
+
+// // 断开/关闭链接   执行完sql语句就可以关闭连接
+// conn.end();

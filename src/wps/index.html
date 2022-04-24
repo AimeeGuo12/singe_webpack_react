@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weboffice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .custom-mount {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="custom-mount"></div>
+    <script src="./web-office-sdk/web-office-sdk-v1.1.18.umd.js"></script>
+    <script src="https://cdn.bootcss.com/babel-core/5.8.35/browser.min.js"></script>
+    <!-- 用于兼容promise -->
+    <script src="https://cdn.bootcss.com/babel-core/5.8.35/browser-polyfill.min.js"></script>
+    <script type="text/babel">
+        window.onload = function () {
+            const instance = WebOfficeSDK.config({
+                // url: 'https://www.kdocs.cn/p/70489523249',
+                url: 'https://kdocs.cn/l/ctQSdJq4EIzC',
+                mount: document.querySelector('.custom-mount'),
+                mode: 'normal'
+            });
+            example()
+            // const test = async () => {
+            //     await jssdk.ready();
+            //     console.log('api ready');
+            // }
+            // jssdk.on('fileOpen', function (data) {
+            //     test();
+            //     console.log('打开成功');
+            // });
+
+
+            // // 获取 token 函数
+            // const refreshToken = () => {
+            //     // 自身业务处理...
+
+            //     // 可以返回 Promise 或者 return { token, timeout }
+            //     return Promise.resolve({
+            //         token: 'yourToken', // 必需：你需要设置的 toekn
+            //         timeout: 10 * 60 * 1000, //  必需：token 超时时间，以 10 分钟示例
+            //     });
+            // };
+
+            // // 配置超时获取 token 函数
+            // const jssdk = WebOfficeSDK.config({ refreshToken });
+
+            // // 设置 token
+            // jssdk.setToken({
+            //     token: 'yourToken', // 根据自身的业务需求，通过异步请求或者模板输出的方式，取得 token
+            //     timeout: 10 * 60 * 1000, // token 超时时间，可配合 refreshToken 配置函数使用，在超时前调用 refreshToken 重新刷新 token
+            // });
+
+                // 定制元素
+            async function example() {
+                await instance.ready();
+
+                const app = instance.Application;
+                console.log(app)
+                // 通过 CommandBar 的 Controls 对象，可获取到对应类型的内容集合，从而做新增操作或者获取到具体内容进行操作
+                // 定制元素对象：【插入 Tab】
+                const controls = await app.CommandBars('InsertTab').Controls;
+
+                // 新增按钮型定制元素
+                const controlButton = await controls.Add(1);
+                controlButton.Caption = '人事报表信息集';
+                controlButton.TooltipText = '人事报表信息集';
+                controlButton.SetFocus(true); // 聚焦该元素
+                controlButton.OnAction = () => {
+                    // const tsk = app.CreateTaskPane('<div>测试<div/>')
+                    // tsk.visible = true
+                    // console.log(instance)
+                    // app.TaskPanes().visible = true
+                    console.log('按钮点击了')
+                    console.log(app.CommandBars)
+                };
+                // // 新增下拉框型定制元素
+                // const controlPopup = await controls.Add(10);
+                // controlPopup.Caption = '下拉框';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -26,6 +26,7 @@ import RouterSearchPage from './react/04react-router/router-search';
 import AppPage from './react/05g-react-router/index';
 import FuckEvent from './react/hecheng'
 import BigData from './components/Study/BigData.js'
+import IndexDemo from './hooks'
 class App extends React.Component{
     render = () => {
         return (
@@ -57,7 +58,8 @@ class App extends React.Component{
                <RouterSearchPage></RouterSearchPage> */}
                {/* <AppPage></AppPage> */}
                {/* <FuckEvent></FuckEvent> */}
-               <BigData/>
+               {/* <BigData/> */}
+               <IndexDemo/>
             </div>
         )
     }
