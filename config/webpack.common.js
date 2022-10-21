@@ -66,7 +66,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 function webpackCommonConfigCreator(options) {
     return {
         mode: options.mode,
-        entry: "./src/index.js",
+        // entry: "./src/index.js",
+        entry: "/src/components/Demo/inedx.js",
         // entry: './src/react/07fiber-diff/index.js',
         // entry: './src/for wr/index.js',
         output: {

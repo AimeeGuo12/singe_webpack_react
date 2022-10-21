@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button click="test">点击打开wps</button>
+    <script>
+        window.onload = function () {
+            test()
+       
+        function test() {
+            console.log('进入')
+            var shell = new ActiveXObject("WScript.Shell");
+            var path = "HKEY_CURRENT_USER\\SOFTWARE\\Kingsoft\\Office\\6.0\\Common\\InstallRoot"
+            var exePath = shell.RegRead("HKEY_CLASSES_ROOT\\ksoWPSCloudSvr\\shell\\open\\command");
+            var exePath1 = shell.RegRead(path)
+            //据注册表信息找到本地应用程序安装路径
+
+            shell.run(exePath1+'\\office6\\ksolaunch.exe')
+        }
+    }
+    </script>
+</body>
+
+</html>
