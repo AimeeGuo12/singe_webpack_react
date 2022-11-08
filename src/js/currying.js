@@ -167,3 +167,25 @@ function add(...args1){
     } 
     return fn 
 } 
+
+
+const curry = function(fn) { // 传入一个函数
+    return function curriedFn(...args) { // 返回一个函数
+        if(args.length < fn.length) {
+            return function() {
+                return curriedFn(...args.concat([...arguments]))
+            }
+        }
+        return fn(...args)
+    }
+}
+
+const fn1 = (x,y,z,a)=>x+y+z+a;
+const myfn = curry(fn1);
+console.log(myfn(1)(2)(3)(1));
+
+// 组合函数
+const compose = (...fns)=>val=>fns.reverse().reduce((acc,fn)=>fn(acc),val);
+
+// 管道函数
+const pipe = (...fns) => val => fns.reduce((acc,fn)=>fn(acc),val);

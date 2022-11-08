@@ -66,8 +66,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 function webpackCommonConfigCreator(options) {
     return {
         mode: options.mode,
-        // entry: "./src/index.js",
-        entry: "/src/components/Demo/inedx.js",
+        entry: "./src/index.js",
+        // entry: "/src/components/Demo/inedx.js",
         // entry: './src/react/07fiber-diff/index.js',
         // entry: './src/for wr/index.js',
         output: {
@@ -120,7 +120,7 @@ function webpackCommonConfigCreator(options) {
             // }),
         ],
         module: {
-            rules: [ 
+            rules: [
                 {
                     test: /\.(js|jsx)$/,
                     include: path.resolve(__dirname, '../src'),
@@ -130,10 +130,10 @@ function webpackCommonConfigCreator(options) {
                         options: {
                             presets: ["@babel/preset-env", "@babel/preset-react"],
                             plugins: [
-                            ['import', {libraryName: 'antd', style: 'css'}], // 按需加载
-                             ["transform-class-properties", { "spec": true }],
-                             "@babel/plugin-transform-runtime",
-                            '@babel/plugin-transform-regenerator'
+                                ['import', { libraryName: 'antd', style: 'css' }], // 按需加载
+                                ["transform-class-properties", { "spec": true }],
+                                "@babel/plugin-transform-runtime",
+                                '@babel/plugin-transform-regenerator'
                             ]
                         }
                     }
@@ -157,10 +157,10 @@ function webpackCommonConfigCreator(options) {
                             },
                             {
                                 loader: "postcss-loader", // 使用postcss对css3属性添加前缀
-                                options: { 
+                                options: {
                                     ident: 'postcss',
                                     plugins: loader => [
-                                        require('postcss-import')({root: loader.resourcePath}),
+                                        require('postcss-import')({ root: loader.resourcePath }),
                                         require('autoprefixer')()
                                     ]
                                 }
@@ -193,7 +193,7 @@ function webpackCommonConfigCreator(options) {
                         loader: "less-loader" // compiles Less to CSS
                     }]
                 },
-               
+
                 {
                     test: /\.(png|jpg|jpeg|gif|svg)$/,
                     use: [
@@ -218,7 +218,7 @@ function webpackCommonConfigCreator(options) {
         // target: 'node',
         optimization: {
             splitChunks: {  // 分割bundle 打包，发现新生成了一个vendor.js文件，公用的一些代码就被打包进去了, 再次打包不会改变hash值
-                chunks: "all", 
+                chunks: "all",
                 // chunks: "async", // 动态引入的模块 https://segmentfault.com/q/1010000019652490/a-1020000019654450
                 // chunks: "initial", // 直接引入的模块
                 minSize: 50000,

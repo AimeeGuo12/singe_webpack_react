@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .border{
+      width: 0px;
+      height: 0px;
+      border: solid;
+      border-width: 0 50px 50px;
+      border-color: transparent transparent #d9534f;
+      /* border: 50px solid; */
+      /* border-color: #96ceb4 #ffeead #d9534f #ffad60; */
+    }
+    .empty{
+      width: 0px;
+      height: 0px;
+      border: solid;
+      border-width: 0 50px 50px;
+      border-color: transparent transparent #d9534f;
+      position: relative;
+    }
+    .empty::after{
+      content: '';
+      width: 0px;
+      height: 0px;
+      border: solid;
+      /* 上  左右 下 */
+      border-width: 0 40px 40px;  
+      border-color: transparent transparent #96ceb4;
+      position: absolute;
+      left: -40px;
+      top: 5px;
+    }
+
+    .span1{
+        font-size: 12px;
+        display: inline-block;
+        zoom: 0.8;
+    }
+    .span2{
+        display: inline-block;
+        font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 实心 -->
+  <div class="border"></div> 
+  <!-- 空心 -->
+  <div class="empty"></div>
+
+  <span class="span1">测试10px</span>
+  <span class="span2">测试12px</span>
+</body>
+</html>

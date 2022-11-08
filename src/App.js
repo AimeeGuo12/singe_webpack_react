@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import { Router, Route, Link } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom';
 // import {hot} from 'react-hot-loader/root';
@@ -27,14 +27,19 @@ import RouterSearchPage from './react/04react-router/router-search';
 // import FuckEvent from './react/hecheng'
 // import BigData from './components/Study/BigData.js'
 import IndexDemo from './hooks'
-import {IndexDemo1} from './hooks'
-class App extends React.Component{
+import { IndexDemo1 } from './hooks'
+
+import Demo from './components/Demo/inedx'
+
+import EchartsDemo from './components/Demo/echartOptions.js'
+import EchartsDemo2 from './components/Demo/echartConnect'
+class App extends React.Component {
     render = () => {
         return (
             <div className='title'>
                 {/* <button onClick={currying}>测试</button> */}
-            {/* // <div className={styles.title}> */}
-    
+                {/* // <div className={styles.title}> */}
+
                 {/* hello react */}
                 {/* <img src={pic_1} alt="" style={{width: 100, height: 100}}/>
                 <img src={pic_2} alt="" style={{width: 100, height: 100}}/> */}
@@ -51,17 +56,20 @@ class App extends React.Component{
                 </Router> */}
 
                 {/* <ReactApp></ReactApp> */}
-               <br/>
-               {/* 路由 */}
-               {/* <RouterPage></RouterPage> */}
-               {/* <RouteChildren></RouteChildren>
+                <br />
+                {/* 路由 */}
+                {/* <RouterPage></RouterPage> */}
+                {/* <RouteChildren></RouteChildren>
                <RouteComponent></RouteComponent>
                <RouterSearchPage></RouterSearchPage> */}
-               {/* <AppPage></AppPage> */}
-               {/* <FuckEvent></FuckEvent> */}
-               {/* <BigData/> */}
-               <IndexDemo/>
-               <IndexDemo1/>
+                {/* <AppPage></AppPage> */}
+                {/* <FuckEvent></FuckEvent> */}
+                {/* <BigData/> */}
+                {/* <IndexDemo /> */}
+                {/* <IndexDemo1 /> */}
+                {/* <Demo /> */}
+                <EchartsDemo />
+                <EchartsDemo2 />
             </div>
         )
     }
@@ -72,7 +80,7 @@ class App extends React.Component{
 //       articles: state.articles,
 //     }
 //   }
-  
+
 //   const mapDispatchToProps = dispatch => {
 //     return {
 //       saveArticle: article => dispatch(simulateHttpRequest(article)),
