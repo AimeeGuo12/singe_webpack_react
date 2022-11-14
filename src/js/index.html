@@ -33,6 +33,7 @@
         <button>点击</button>
         <div id="container"></div>
     </div>
+    <div id="map"></div>
 </body>
 <!-- <script src='./dynamicProgramming.js'></script> -->
 <!-- <script src="./currying.js"></script> -->
@@ -105,6 +106,20 @@
             console.log(a,b)
         }
         teste()
+
+        // 创建地图
+        const map = new Map.map(document.getElementById('map'), {
+            zoom: 4,
+            center: { lat: '222', lng: '333'}
+        })
+
+        //创建标记
+        const marker = new Map.marker({
+            position: { lat: '222', lng: '333'},
+            title: 'Hello Marker'
+        })
+        // 地图上添加标记
+        marker.setMap(map);
     }
 </script>
 

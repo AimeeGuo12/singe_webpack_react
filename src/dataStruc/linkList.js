@@ -3,5 +3,35 @@
 
 
 class Node{
-
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
 }
+
+// 遍历
+let current = head;
+while(current) {
+  console.log(current.val) 
+  current = current.next
+}
+// 链表插入删除效率极高，达到O(1)
+// 插入val
+// 找到插入得位置postion 添加node链表节点
+while(current < position) {
+  previous = current;
+  current = current.next
+}
+
+previous.next = node
+node.next = current
+
+// 删除
+while (current != node){
+  pervious = current;
+  current = current.next;
+  nextNode = current.next;
+}
+pervious.next = nextNode
+
+// 应用场景： 缓存

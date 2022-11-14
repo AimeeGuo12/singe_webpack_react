@@ -14,7 +14,7 @@ function IndexDemo() {
         </div>
     )
 }
-export default IndexDemo
+// export default IndexDemo
 
 
 
@@ -40,4 +40,26 @@ export function IndexDemo1() {
             {/* <button ref={dom}></button> */}
         </div>
     )
+}
+
+
+import React, { Component } from 'react';
+
+export class UnControll extends Component {
+  constructor (props) {
+    super(props);
+    this.inputRef = React.createRef();
+  }
+  handleSubmit = (e) => {
+    console.log('我们可以获得input内的值为', this.inputRef.current.value);
+    e.preventDefault();
+  }
+  render () {
+    return (
+      <form onSubmit={e => this.handleSubmit(e)}>
+        <input defaultValue="lindaidai" ref={this.inputRef} />
+        <input type="submit" value="提交" />
+      </form>
+    )
+  }
 }

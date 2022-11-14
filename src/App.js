@@ -26,8 +26,8 @@ import RouterSearchPage from './react/04react-router/router-search';
 // import AppPage from './react/05g-react-router/index';
 // import FuckEvent from './react/hecheng'
 // import BigData from './components/Study/BigData.js'
-import IndexDemo from './hooks'
-import {IndexDemo1} from './hooks'
+// import IndexDemo from './hooks'
+import {IndexDemo1, UnControll} from './hooks'
 class App extends React.Component{
     render = () => {
         return (
@@ -60,8 +60,9 @@ class App extends React.Component{
                {/* <AppPage></AppPage> */}
                {/* <FuckEvent></FuckEvent> */}
                {/* <BigData/> */}
-               <IndexDemo/>
+               {/* <IndexDemo/> */}
                <IndexDemo1/>
+               <UnControll/>
             </div>
         )
     }

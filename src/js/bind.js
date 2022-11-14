@@ -1,3 +1,5 @@
+const { Button } = require("antd");
+
 var foo = { value: 1 };
 
 function bar(name, age) {
@@ -53,4 +55,15 @@ Function.prototype.myBind = function(context) {
         // 根据调用方式，传入不同绑定值
         return fn.apply(this instanceof Fn ? new fn(...arguments): context, args.concat(...arguments))
     }
+}
+
+interface Button{
+    type: string,
+    text: string
+}
+
+keyof Button
+
+function copy<T extends Button, U extends keyof T>(args: T): T{
+    return args
 }

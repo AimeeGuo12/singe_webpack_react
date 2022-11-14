@@ -2,6 +2,8 @@
 // 队尾插入  队头删除 队列和栈一样只允许在断点处插入和删除元素。
 // 1. 用 JavaScript 模拟一个单链队列
 
+
+// push shift 
 class Queue {
     constructor() {
         this.queue = []
