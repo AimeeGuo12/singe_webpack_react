@@ -1,0 +1,36 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>svg实现饼图、折线图和面积图</title>
+</head>
+<body>
+    <!-- viewBox="0 0 60 100" -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="1000px" height="1000px">
+         
+        <!-- <g transform="translate(0, 100) scale(1, -1)">      
+            <g>        
+                <rect x="1" y="0" width="10" height="25" fill="#37c"/>        
+                <rect x="13" y="0" width="10" height="26" fill="#37c"/>        
+                <rect x="25" y="0" width="10" height="40" fill="#37c"/>        
+                <rect x="37" y="0" width="10" height="45" fill="#37c"/>       
+                <rect x="49" y="0" width="10" height="68" fill="#37c"/>      
+            </g>      
+            <g>        
+                <rect x="1" y="0" width="10" height="15" fill="#3c7"/>        
+                <rect x="13" y="0" width="10" height="11" fill="#3c7"/>        
+                <rect x="25" y="0" width="10" height="17" fill="#3c7"/>        
+                <rect x="37" y="0" width="10" height="25" fill="#3c7"/>        
+                <rect x="49" y="0" width="10" height="37" fill="#3c7"/>      
+            </g>    
+            
+        </g> -->
+        <circle cx="150" cy="100" r="80" fill="green"/> 
+        <polyline points="60 110, 65 120, 70 115, 75 130, 80 125, 85 140, 90 135, 95 150, 100 145"/>
+        <path d="M 20 230 Q 40 205, 50 230 T 90230"/>
+        <!-- path的使用： https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Paths -->
+    </svg>
+</body>
+</html>

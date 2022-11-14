@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hierarchy render by canvas</title>
+    <style>
+      canvas {
+        width: 800px;
+        height: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="1600" height="1600"></canvas>
+    <script src="https://d3js.org/d3-hierarchy.v1.min.js"></script>
+    <script>
+      const dataSource =
+        "https://s5.ssl.qhres2.com/static/b0695e2dd30daa64.json";
+
+      /* globals d3 */
+      (async function () {
+        const data = await (await fetch(dataSource)).json();
+        const regions = d3
+          .hierarchy(data)
+          .sum((d) => 1)
+          .sort((a, b) => b.value - a.value);
+
+        const pack = d3.pack().size([1600, 1600]).padding(3);
+
+        const root = pack(regions);
+
+        const canvas = document.querySelector("canvas");
+        const context = canvas.getContext("2d");
+        const TAU = 2 * Math.PI;
+
+        function draw(
+          ctx,
+          node,
+          { fillStyle = "rgba(0, 0, 0, 0.2)", textColor = "white" } = {}
+        ) {
+          const children = node.children;
+          const { x, y, r } = node;
+          ctx.fillStyle = fillStyle;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, TAU);
+          ctx.fill();
+          if (children) {
+            for (let i = 0; i < children.length; i++) {
+              draw(context, children[i]);
+            }
+          } else {
+            const name = node.data.name;
+            ctx.fillStyle = textColor;
+            ctx.font = "1.5rem Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(name, x, y);
+          }
+        }
+
+        draw(context, root);
+        let isInside = false;
+        let highItemName = ''
+        canvas.addEventListener('mousemove', (event) => {
+            console.log(event)
+            let {offsetX, offsetY} = event
+            
+            isInCircle(context, offsetX, offsetY, root)
+        })
+
+        function isInCircle(context, mx, my, node) {
+            const children = node.children;
+            const {x, y, r, data} = node;
+            // console.log(children)
+            if(children) {
+                for(let i = 0; i < children.length; i++) {
+                    if(isInside) {
+                        break;
+                    } else {
+                        isInCircle(context, mx, my, children[i])
+                    }
+                }
+            } else {
+                console.log(mx, my, x, y, r)
+                // 打印了一下发现 my 和 y差的也太多了吧，感觉y是错的  永远都大于r*r
+                if((my-y) * (my-y) + (mx-x)*(mx-x) <r*r){
+                    console.log(highItemName)
+                    if(highItemName && highItemName === data.name) {
+                        console.log('已经存在渲染')
+                    } else {
+                        highItemName = data.name
+                        isInside = true
+                    }
+                }
+            }
+            if(isInside) {
+                // 清空画布重画？？
+                context.clearRect(0,0,1600, 1600);
+                draw(context, node);
+                isInside = false
+            }
+        }
+      })();
+    </script>
+  </body>
+</html>
